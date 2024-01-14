@@ -3,10 +3,7 @@ package pt.ulusofona.lp2.deisichess;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class GameManager {
 
@@ -21,8 +18,8 @@ public class GameManager {
     private final int WHITE_PIECES_VALID_MOVES_COUNTER = 4;
     private final int BLACK_PIECES_INVALID_MOVES_COUNTER = 5;
     private final int WHITE_PIECES_INVALID_MOVES_COUNTER = 6;
-    ArrayList<String> chessInfo = new ArrayList<>();
 
+    ArrayList<String> chessInfo = new ArrayList<>();
     HashMap<Integer,Piece> piecesDictionary = new HashMap<>();
 
     HashMap<Integer, HashMap<Integer,Integer>> chessMatrix = new HashMap<>();
@@ -39,7 +36,7 @@ public class GameManager {
     }
 
     //Leitor dos arquivos de informação do Jogo
-    public boolean loadGame(File file){
+    public boolean loadGame(File file) throws InvalidGameInputException, IOException{
 
         try{
             Scanner leitor = new Scanner(file);
@@ -267,4 +264,20 @@ public class GameManager {
         }
     }
 
+    public Map<String, String> customizeBoard(){
+        return new HashMap<>();
+    }
+
+
+    public void saveGame(File file) throws IOException{
+
+    }
+
+    public void undo(){
+
+    }
+
+    List<Comparable> getHints(int x, int y){
+        return new ArrayList<>();
+    }
 }

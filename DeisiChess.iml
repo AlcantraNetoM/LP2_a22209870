@@ -7,6 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="LP2-GuiViewer2324-recurso-1.0.0" level="project" />
     <orderEntry type="library" name="LP2-GuiViewer2324-p1-1.0.0" level="project" />
   </component>
 </module>
