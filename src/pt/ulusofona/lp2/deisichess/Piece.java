@@ -12,7 +12,7 @@ public class Piece {
     public int team;
     public String nickName;
 
-
+    private String pieceInfo;
 
     //CAMINHO DAS IMAGENS DAS PEÇAS
     //Put the image in src/Image folder then use filename with the xtension
@@ -25,11 +25,15 @@ public class Piece {
         this.team = team;
         this.nickName = nickName;
 
-
         fillComponents();
+
+        updatePieceInfo();
     }
 
 
+    public void updatePieceInfo(){
+        pieceInfo = id+":"+name+":"+type+":"+team+":"+nickName;
+    }
     private void fillComponents() {
 
         switch (type) {
@@ -125,10 +129,7 @@ public class Piece {
     }
 
     public String toString(){
-        if (avatarImgPath != null){
-            return id+":"+type+":"+team+":"+nickName+":"+avatarImgPath;
-        }
-        return id+":"+type+":"+team+":"+nickName;
+        return pieceInfo;
     }
 
     public String[] toStringInfo(){
@@ -139,12 +140,21 @@ public class Piece {
                 nickName, avatarImgPath};
     }
 
+
+    public void setPieceInfo(String pieceInfo){
+        this.pieceInfo = pieceInfo;
+    }
+
     public int getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     public int getValue() {
