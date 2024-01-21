@@ -1,6 +1,6 @@
 package pt.ulusofona.lp2.deisichess
 
-class Statistics {
+class StatisticsKt {
 
     fun getTop5Capturas() : ArrayList<String> {
         return ArrayList()

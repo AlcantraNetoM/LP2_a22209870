@@ -42,7 +42,7 @@ public class GameManager {
     String result;
     int currentTeam = BLACK_PIECE;
 
-    Statistics statisticsKT = new Statistics();
+    StatisticsKt statisticsKT = new StatisticsKt();
 
 
     //Leitor dos arquivos de informação do Jogo
@@ -97,6 +97,7 @@ public class GameManager {
 
     //Fazer jogada
     public boolean move(int x0, int y0, int x1, int y1){
+
 
         //Peça a jogar
         Piece piece = piecesDictionary.get(chessMatrix.get(y0).get(x0));
