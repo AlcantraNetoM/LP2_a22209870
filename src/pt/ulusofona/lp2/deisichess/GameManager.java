@@ -1005,8 +1005,9 @@ public class GameManager {
         }
     }
 
-    public List<ChessCoordinates> getHints(int x, int y) {
+    public List<Comparable> getHints(int x, int y) {
 
+        /*
         int pieceId = chessMatrix.get(y).get(x);
         Piece piece = piecesDictionary.get(pieceId);
         List<ChessCoordinates> list = new ArrayList<>();
@@ -1014,73 +1015,6 @@ public class GameManager {
 
         //Coloca a peça Rei na nova posição
 
-        /*
-        if (piece.getType() == 0) {
-            //Coloca o Rei na Diagonal
-            for (int i = x, j = y; i != x + 1; ) {
-                if (i < x + 1 && j < y + 1) {
-                    ++i;
-                    ++j;
-                    if (chessMatrix.get(j).get(i) != 0 && i != x + 1 && j != x + 1 ) {
-                        
-                    }
-
-                } else if (i > x + 1 && j > y + 1) {
-                    --i;
-                    --j;
-                    if (chessMatrix.get(j).get(i) != 0 && i != x + 1 && j != x + 1 ) {
-                        return false;
-                    }
-
-                } else if (i > x + 1 && j < y + 1) {
-                    --i;
-                    ++j;
-                    if (chessMatrix.get(j).get(i) != 0 && i != x + 1 && j != x + 1 ) {
-                        return false;
-                    }
-                } else if (i < x + 1 && j > y + 1) {
-                    ++i;
-                    --j;
-                    if (chessMatrix.get(j).get(i) != 0 && i != x + 1 && j != x + 1 ) {
-                        return false;
-                    }
-                }
-            }
-            movePiece(y + 1, y, x + 1, x, piece);
-            //Coloca o Rei na horizontal
-            for (int i = x; i != x + 1; ) {
-                if (i < x + 1) {
-                    ++i;
-                    if (chessMatrix.get(y + 1).get(i) != 0 && i != x + 1) {
-                        return false;
-                    }
-                } else {
-                    --i;
-                    if (chessMatrix.get(y + 1).get(i) != 0 && i != x + 1) {
-                        return false;
-                    }
-                }
-            }
-            movePiece(y + 1, y, x + 1, x, piece);
-            //Coloca o Rei na Vertical
-            for (int j = y; j != y + 1; ) {
-                if (j < y + 1) {
-                    ++j;
-                    if (chessMatrix.get(j).get(x + 1) != 0 && j != y + 1) {
-                        return false;
-                    }
-                } else {
-                    --j;
-                    if (chessMatrix.get(j).get(x + 1) != 0 && j != y + 1) {
-                        return false;
-                    }
-                }
-            }
-            movePiece(y + 1, y, x + 1, x, piece);
-        }
-
-
-         */
         if (piece.getType() == 1) {
 
             //Coloca da rainha na posição diagonal
@@ -1358,5 +1292,7 @@ public class GameManager {
 
 
         return list;
+         */
+        return new ArrayList<>();
     }
 }
