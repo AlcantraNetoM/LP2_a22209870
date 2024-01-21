@@ -11,6 +11,8 @@ public class GameManager {
 
     private final int BLACK_PIECE = 10;
     private final int WHITE_PIECE = 20;
+
+    private final int YELLOW_PIECE = 30;
     private final int BLACK_PIECES_ELIMINATED_CONTROLLER = 0;
     private final int WHITE_PIECES_ELIMINATED_CONTROLLER = 1;
     private final int LIMIT_OF_MOVES_BY_PIECES_CONTROLLER = 2;
