@@ -42,6 +42,8 @@ public class GameManager {
     String result;
     int currentTeam = BLACK_PIECE;
 
+    Statistics statisticsKT = new Statistics();
+
 
     //Leitor dos arquivos de informação do Jogo
     public void loadGame(File file) throws InvalidGameInputException,InvalidTeamException, IOException{
