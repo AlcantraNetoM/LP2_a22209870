@@ -44,7 +44,7 @@ public class GameManager {
 
 
     //Leitor dos arquivos de informação do Jogo
-    public void loadGame(File file) throws InvalidGameInputException, IOException{
+    public void loadGame(File file) throws InvalidGameInputException,InvalidTeamException, IOException{
 
         undoList = new ArrayList<>();
         chessInfo = new ArrayList<>();
@@ -882,7 +882,7 @@ public class GameManager {
      */
 
     //Adiciona as informações das Peças numa lista de objectos
-    private void insertPiecesInfo() throws InvalidGameInputException{
+    private void insertPiecesInfo() throws InvalidGameInputException, InvalidTeamException {
             //Percorre a lista das peças
             for (int i = 0; i < getPiecesSize(); ++i) {
 
@@ -894,6 +894,9 @@ public class GameManager {
                     int team = Integer.parseInt(pieceInfo[2]);
                     String nickName = pieceInfo[3];
 
+                    if (team != 10 && team != 20 && team != 30){
+                        throw new InvalidTeamException("Equipa inválida");
+                    }
 
 
                     Piece peca = new Piece(id,type, team, nickName);
