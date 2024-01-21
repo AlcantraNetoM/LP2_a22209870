@@ -1,0 +1,26 @@
+8
+16
+1:0:10:O Poderoso Chefao
+2:1:10:A Dama Selvagem
+3:2:10:O Grande Artista
+4:3:10:Amante de Praia
+5:4:10:Artolas
+6:5:10:O Maior Grande
+7:6:10:Hommie
+8:7:10:O Beberolas
+9:0:20:Chefe dos Indios
+10:1:20:A Barulhenta do Bairro
+11:2:20:My Little Pony
+12:3:20:Padreco
+13:4:20:Torre Poderosa
+14:5:20:Torre Trapalhona
+15:6:20:Homer Jay Simpson
+16:7:20:O Bobo da Corte
+1:2:3:4:5:6:7:8
+0:0:0:0:0:0:0:0
+0:0:0:0:0:0:0:0
+0:0:0:0:0:0:0:0
+0:0:0:0:0:0:0:0
+0:0:0:0:0:0:0:0
+0:0:0:0:0:0:0:0
+9:10:11:12:13:14:15:16
