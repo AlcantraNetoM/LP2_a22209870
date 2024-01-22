@@ -43,11 +43,11 @@ public class GameManager {
     String result;
     int currentTeam;
 
-    Statistics statistics = new Statistics();
 
 
     //Leitor dos arquivos de informação do Jogo
     public void loadGame(File file) throws InvalidGameInputException,InvalidTeamException, IOException{
+
 
         undoList = new ArrayList<>();
         chessInfo = new ArrayList<>();

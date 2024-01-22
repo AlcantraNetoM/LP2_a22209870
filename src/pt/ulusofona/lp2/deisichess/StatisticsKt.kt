@@ -1,9 +1,7 @@
 package pt.ulusofona.lp2.deisichess
 
-class Statistics {
-
-
-    fun getStatsCalculator(statType: StatType): (GameManager) -> List<String> {
+public class StatisticsKt
+     public fun getStatsCalculator(statType: StatType): (GameManager) -> List<String> {
         when (statType) {
             StatType.TOP_5_CAPTURAS -> return ::getTop5Capturas
             StatType.TOP_5_PONTOS -> return ::getTop5Pontos
@@ -55,4 +53,3 @@ class Statistics {
         myList.add("dd")
         return myList
     }
-}
