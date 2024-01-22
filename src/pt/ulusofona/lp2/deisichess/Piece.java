@@ -7,12 +7,15 @@ public class Piece {
 
     public String name;
 
-    public int value;
-    public int type;
-    public int team;
-    public String nickName;
-
+    private int value;
+    private int type;
+    private int team;
+    private String nickName;
     private String pieceInfo;
+
+    private int coordinateX;
+
+    private int coordinateY;
 
     //CAMINHO DAS IMAGENS DAS PEÇAS
     //Put the image in src/Image folder then use filename with the xtension
@@ -32,7 +35,13 @@ public class Piece {
 
 
     public void updatePieceInfo(){
-        pieceInfo = id+":"+name+":"+type+":"+team+":"+nickName;
+        if (getType() == 0){
+            pieceInfo = id+" | "+name+" | (infinito) | "+team+" | "+nickName+" @ ("+getCoordinateX()+", "+getCoordinateY()+")";
+        }
+        else{
+            pieceInfo = id+" | "+name+" | "+value+" | "+team+" | "+nickName+" @ ("+getCoordinateX()+", "+getCoordinateY()+")";
+        }
+
     }
     private void fillComponents() {
 
@@ -213,5 +222,21 @@ public class Piece {
 
     public String getNickName() {
         return nickName;
+    }
+
+    public int getCoordinateX() {
+        return coordinateX;
+    }
+
+    public int getCoordinateY() {
+        return coordinateY;
+    }
+
+    public void setCoordinateX(int coordinateX) {
+        this.coordinateX = coordinateX;
+    }
+
+    public void setCoordinateY(int coordinateY) {
+        this.coordinateY = coordinateY;
     }
 }

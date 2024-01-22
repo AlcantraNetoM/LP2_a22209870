@@ -106,10 +106,10 @@ public class GameManager {
         Piece nextPiece = piecesDictionary.get(chessMatrix.get(y1).get(x1));
 
 
-        if (piece.team == currentTeam){
+        if (piece.getTeam() == currentTeam){
 
-            if (nextPiece != null && nextPiece.team == piece.team){
-                    if (piece.team == blackPiece) {
+            if (nextPiece != null && nextPiece.getTeam() == piece.getTeam()){
+                    if (piece.getTeam() == blackPiece) {
                         int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter);
                         piecesCounter.put(blackPiecesInvalidMovesCounter, ++currentResult);
                     }
@@ -749,14 +749,14 @@ public class GameManager {
 
             //Trocar a vez do jogo das peças
             if (isBlackPieceInBoard){
-                if (piece.team == blackPiece){
+                if (piece.getTeam() == blackPiece){
 
                     int currentResult = piecesCounter.get(blackPiecesValidMovesCounter);
                     piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
                     currentTeam = whitePiece;
 
                 }
-                else if (piece.team == whitePiece){
+                else if (piece.getTeam() == whitePiece){
                     int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
                     piecesCounter.put(whitePiecesValidMovesCounter, ++currentResult);
                     currentTeam = blackPiece;
@@ -766,12 +766,12 @@ public class GameManager {
                 }
             }
             else{
-                if (piece.team == whitePiece){
+                if (piece.getTeam() == whitePiece){
                     int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
                     piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
                     currentTeam = yellowPiece;
                 }
-                else if (piece.team == yellowPiece){
+                else if (piece.getTeam() == yellowPiece){
                     currentTeam = whitePiece;
                 }
             }
@@ -990,6 +990,15 @@ public class GameManager {
             chessMatrix.put(i, new HashMap<>());
 
             for (int j = 0; j < getBoardSize(); j++) {
+
+                int pieceId = Integer.parseInt(chessLineInfo[j]);
+
+                if (pieceId != 0){
+                    Piece piece = piecesDictionary.get(pieceId);
+                    piece.setCoordinateX(i);
+                    piece.setCoordinateY(j);
+                }
+
 
                 chessMatrix.get(i).put(j,Integer.parseInt(chessLineInfo[j]));
 
