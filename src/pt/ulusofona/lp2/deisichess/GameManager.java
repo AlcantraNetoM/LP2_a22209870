@@ -949,7 +949,7 @@ public class GameManager {
 
 
                     if (type == 6){
-                        peca.setPieceInfo("Doh! zzzzzzz");
+                        peca.setPieceInfo("Doh! zzzzzz");
                     }
 
                     if (type == 7){
@@ -995,8 +995,9 @@ public class GameManager {
 
                 if (pieceId != 0){
                     Piece piece = piecesDictionary.get(pieceId);
-                    piece.setCoordinateX(i);
-                    piece.setCoordinateY(j);
+                    piece.setCoordinateX(j);
+                    piece.setCoordinateY(i);
+                    piece.updatePieceInfo();
                 }
 
 

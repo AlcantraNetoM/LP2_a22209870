@@ -76,7 +76,7 @@ public class Piece {
                 break;
             case 7:
                 name = "Joker/";
-                value = 0;
+                value = 4;
                 break;
             case 10:
                 name = "John McClane";
