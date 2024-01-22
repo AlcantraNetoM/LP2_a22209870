@@ -3,9 +3,9 @@ package pt.ulusofona.lp2.deisichess;
 
 public class Piece {
 
-    public int id;
+    private int id;
 
-    public String name;
+    private String name;
 
     private int value;
     private int type;
