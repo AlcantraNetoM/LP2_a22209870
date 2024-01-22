@@ -9,20 +9,20 @@ import java.util.*;
 public class GameManager {
 
 
-    private final int BLACK_PIECE = 10;
-    private final int WHITE_PIECE = 20;
+    private final int blackPiece = 10;
+    private final int whitePiece = 20;
 
-    private final int YELLOW_PIECE = 30;
-    private final int BLACK_PIECES_ELIMINATED_CONTROLLER = 0;
-    private final int WHITE_PIECES_ELIMINATED_CONTROLLER = 1;
-    private final int LIMIT_OF_MOVES_BY_PIECES_CONTROLLER = 2;
-    private final int BLACK_PIECES_VALID_MOVES_COUNTER = 3;
-    private final int WHITE_PIECES_VALID_MOVES_COUNTER = 4;
-    private final int BLACK_PIECES_INVALID_MOVES_COUNTER = 5;
-    private final int WHITE_PIECES_INVALID_MOVES_COUNTER = 6;
-    private final int JOKER_COPY_PIECE_COUNTER = 7;
-    
+    private final int yellowPiece = 30;
+    private final int blackPiecesEliminatedController = 0;
+    private final int whitePiecesEliminatedController = 1;
+    private final int limitOfMovesByPiecesController = 2;
+    private final int blackPiecesValidMovesCounter = 3;
+    private final int whitePiecesValidMovesCounter = 4;
+    private final int blackPiecesInvalidMovesCounter = 5;
+    private final int whitePiecesInvalidMovesCounter = 6;
+    private final int jokerCopyPieceCounter = 7;
 
+    private final int johnMcClaneCounter = 8;
     ArrayList<String> undoList;
     HashMap<Integer, String> typeDictionary = new HashMap<>();
 
@@ -39,10 +39,11 @@ public class GameManager {
     boolean isWhiteKingCaptured = false;
     boolean isBlackKingCaptured = false;
     boolean areOnlyKings = false;
+    boolean isBlackPieceInBoard = false;
     String result;
-    int currentTeam = BLACK_PIECE;
+    int currentTeam;
 
-    StatisticsKt statisticsKT = new StatisticsKt();
+    Statistics statistics = new Statistics();
 
 
     //Leitor dos arquivos de informação do Jogo
@@ -64,22 +65,23 @@ public class GameManager {
 
 
             //Controla o número de peças eliminadas
-            piecesCounter.put(BLACK_PIECES_ELIMINATED_CONTROLLER, getPiecesSize()/2);
-            piecesCounter.put(WHITE_PIECES_ELIMINATED_CONTROLLER, getPiecesSize()/2);
+            piecesCounter.put(blackPiecesEliminatedController, getPiecesSize()/2);
+            piecesCounter.put(whitePiecesEliminatedController, getPiecesSize()/2);
 
             //Controla se as 10 jogadas foram feitas
-            piecesCounter.put(LIMIT_OF_MOVES_BY_PIECES_CONTROLLER,0);
+            piecesCounter.put(limitOfMovesByPiecesController,0);
 
             //Conta o número de jogadas válidas de cada equipa
-            piecesCounter.put(BLACK_PIECES_VALID_MOVES_COUNTER, 0);
-            piecesCounter.put(WHITE_PIECES_VALID_MOVES_COUNTER, 0);
+            piecesCounter.put(blackPiecesValidMovesCounter, 0);
+            piecesCounter.put(whitePiecesValidMovesCounter, 0);
 
             //Conta o número de jogadas inválidas de cada equipa
-            piecesCounter.put(BLACK_PIECES_INVALID_MOVES_COUNTER, 0);
-            piecesCounter.put(WHITE_PIECES_INVALID_MOVES_COUNTER, 0);
+            piecesCounter.put(blackPiecesInvalidMovesCounter, 0);
+            piecesCounter.put(whitePiecesInvalidMovesCounter, 0);
 
-            piecesCounter.put(JOKER_COPY_PIECE_COUNTER, 1);
-           
+            piecesCounter.put(jokerCopyPieceCounter, 1);
+            piecesCounter.put(johnMcClaneCounter, 1);
+
             typeDictionary.put(0, "Rei");
             typeDictionary.put(1, "Rainha");
             typeDictionary.put(2, "Ponei Mágico");
@@ -94,7 +96,6 @@ public class GameManager {
         return Integer.parseInt(chessInfo.get(0));
     }
 
-
     //Fazer jogada
     public boolean move(int x0, int y0, int x1, int y1){
 
@@ -108,16 +109,17 @@ public class GameManager {
         if (piece.team == currentTeam){
 
             if (nextPiece != null && nextPiece.team == piece.team){
-                if (piece.team == BLACK_PIECE){
-                    int currentResult = piecesCounter.get(BLACK_PIECES_INVALID_MOVES_COUNTER);
-                    piecesCounter.put(BLACK_PIECES_INVALID_MOVES_COUNTER, ++currentResult);
-                }
-                else {
-                    int currentResult = piecesCounter.get(WHITE_PIECES_INVALID_MOVES_COUNTER);
-                    piecesCounter.put(WHITE_PIECES_INVALID_MOVES_COUNTER, ++currentResult);
-                }
-                return false;
+                    if (piece.team == blackPiece) {
+                        int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter);
+                        piecesCounter.put(blackPiecesInvalidMovesCounter, ++currentResult);
+                    }
+                    else {
+                        int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter);
+                        piecesCounter.put(whitePiecesInvalidMovesCounter, ++currentResult);
+                    }
+                    return false;
             }
+
 
             try {
                 //Coloca a peça Rei na nova posição
@@ -154,7 +156,7 @@ public class GameManager {
                                 }
                             }
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     }
 
                     //Coloca o Rei na horizontal
@@ -172,7 +174,7 @@ public class GameManager {
                                 }
                             }
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     }
 
                     //Coloca o Rei na Vertical
@@ -190,7 +192,7 @@ public class GameManager {
                                 }
                             }
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     } else {
                         return false;
                     }
@@ -231,7 +233,7 @@ public class GameManager {
                         if (nextPiece != null && nextPiece.getType() == 1) {
                             return false;
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     }
 
                     //Coloca da rainha na horizontal
@@ -252,7 +254,7 @@ public class GameManager {
                         if (nextPiece != null && nextPiece.getType() == 1) {
                             return false;
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     }
 
                     //Coloca da rainha na Vertical
@@ -273,7 +275,7 @@ public class GameManager {
                         if (nextPiece != null && nextPiece.getType() == 1) {
                             return false;
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     } else {
                         return false;
                     }
@@ -336,7 +338,7 @@ public class GameManager {
                             }
 
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     }
                     else {
                         return false;
@@ -373,7 +375,7 @@ public class GameManager {
                                 }
                             }
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     } else {
                         return false;
                     }
@@ -394,7 +396,7 @@ public class GameManager {
                                 }
                             }
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     }
                     else {
                         return false;
@@ -416,7 +418,7 @@ public class GameManager {
                                 }
                             }
                         }
-                        movePiece(y1, y0, x1, x0, piece);
+                        movePiece(y1, y0, x1, x0, piece, nextPiece);
                     }
                     else {
                         return false;
@@ -424,8 +426,8 @@ public class GameManager {
                 }
                 //Coloca a peça Homer Simpson na nova Posição
                 else if (piece.getType() == 6) {
-                    int blackValidMoves = piecesCounter.get(BLACK_PIECES_VALID_MOVES_COUNTER);
-                    int whiteValidMoves = piecesCounter.get(WHITE_PIECES_VALID_MOVES_COUNTER);
+                    int blackValidMoves = piecesCounter.get(blackPiecesValidMovesCounter);
+                    int whiteValidMoves = piecesCounter.get(whitePiecesValidMovesCounter);
                     if ((piece.getTeam() == 10 &&  (blackValidMoves + 1) % 3 == 0) || (piece.getTeam() == 20 &&  (whiteValidMoves + 1) % 3 == 0)){
                         if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 1) {
                             for (int i = x0, j = y0; i != x1; ) {
@@ -456,7 +458,7 @@ public class GameManager {
                                     }
                                 }
                             }
-                            movePiece(y1, y0, x1, x0, piece);
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
                         }
                         else {
                             return false;
@@ -470,7 +472,7 @@ public class GameManager {
                 }
 
                 else if (piece.getType() == 7) {
-                        if (piecesCounter.get(JOKER_COPY_PIECE_COUNTER) == 1){
+                        if (piecesCounter.get(jokerCopyPieceCounter) == 1){
                                 //Coloca da rainha na posição diagonal
                                 if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 5) {
                                     for (int i = x0, j = y0; i != x1; ) {
@@ -504,7 +506,7 @@ public class GameManager {
                                     if (nextPiece != null && nextPiece.getType() == 1) {
                                         return false;
                                     }
-                                    movePiece(y1, y0, x1, x0, piece);
+                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
                                 }
                                 //Coloca da rainha na horizontal
                                 else if ((y1 == y0) && (Math.abs(x1 - x0) <= 5)) {
@@ -524,7 +526,7 @@ public class GameManager {
                                     if (nextPiece != null && nextPiece.getType() == 1) {
                                         return false;
                                     }
-                                    movePiece(y1, y0, x1, x0, piece);
+                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
                                 }
                                 //Coloca da rainha na Vertical
                                 else if ((x1 == x0) && (Math.abs(y1 - y0) <= 5)) {
@@ -544,7 +546,7 @@ public class GameManager {
                                     if (nextPiece != null && nextPiece.getType() == 1) {
                                         return false;
                                     }
-                                    movePiece(y1, y0, x1, x0, piece);
+                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
                                 }
 
                                 else {
@@ -554,7 +556,7 @@ public class GameManager {
 
 
                         }
-                        else if (piecesCounter.get(JOKER_COPY_PIECE_COUNTER) == 2) {
+                        else if (piecesCounter.get(jokerCopyPieceCounter) == 2) {
                             if (Math.abs(y1 - y0) == 2 && Math.abs(x1 - x0) == 2) {
 
                                 boolean isVerticalLineBlocked = false;
@@ -611,7 +613,7 @@ public class GameManager {
                                     }
 
                                 }
-                                movePiece(y1, y0, x1, x0, piece);
+                                movePiece(y1, y0, x1, x0, piece, nextPiece);
                             }
                             else {
                                 return false;
@@ -619,7 +621,7 @@ public class GameManager {
 
 
                         }
-                        else if (piecesCounter.get(JOKER_COPY_PIECE_COUNTER) == 3) {
+                        else if (piecesCounter.get(jokerCopyPieceCounter) == 3) {
                             if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 3) {
                                 for (int i = x0, j = y0; i != x1; ) {
                                     if (i < x1 && j < y1) {
@@ -649,14 +651,14 @@ public class GameManager {
                                         }
                                     }
                                 }
-                                movePiece(y1, y0, x1, x0, piece);
+                                movePiece(y1, y0, x1, x0, piece, nextPiece);
                             }
                             else {
                                 return false;
                             }
 
                         }
-                        else if (piecesCounter.get(JOKER_COPY_PIECE_COUNTER) == 4) {
+                        else if (piecesCounter.get(jokerCopyPieceCounter) == 4) {
                             if ((y1 == y0)) {
                                 for (int i = x0; i != x1; ) {
                                     if (i < x1) {
@@ -671,14 +673,14 @@ public class GameManager {
                                         }
                                     }
                                 }
-                                movePiece(y1, y0, x1, x0, piece);
+                                movePiece(y1, y0, x1, x0, piece, nextPiece);
                             }
                             else {
                                 return false;
                             }
 
                         }
-                        else if (piecesCounter.get(JOKER_COPY_PIECE_COUNTER) == 5) {
+                        else if (piecesCounter.get(jokerCopyPieceCounter) == 5) {
                             if ((x1 == x0)) {
                                 for (int j = y0; j != y1; ) {
                                     if (j < y1) {
@@ -693,16 +695,20 @@ public class GameManager {
                                         }
                                     }
                                 }
-                                movePiece(y1, y0, x1, x0, piece);
+                                movePiece(y1, y0, x1, x0, piece, nextPiece);
                             }
                             else {
                                 return false;
                             }
 
                         }
-                        else if (piecesCounter.get(JOKER_COPY_PIECE_COUNTER) == 6) {
+                        else if (piecesCounter.get(jokerCopyPieceCounter) == 6) {
                             return false;
                         }
+                }
+
+                else if (piece.getType() == 10){
+                    return false;
                 }
 
             }
@@ -714,7 +720,7 @@ public class GameManager {
             if (nextPiece != null){
 
                 //reseta o número de jogadas sem eliminações
-                piecesCounter.put(LIMIT_OF_MOVES_BY_PIECES_CONTROLLER,0);
+                piecesCounter.put(limitOfMovesByPiecesController,0);
                 //
                 //piecesCounter.put(nextPiece.team, piecesCounter.get(nextPiece.team)-1);
                 if (nextPiece.getType() == 1 && nextPiece.getTeam() == 10){
@@ -724,8 +730,8 @@ public class GameManager {
                     isWhiteKingCaptured = true;
                 }
 
-                int capturedBlackPieces = piecesCounter.get(BLACK_PIECES_ELIMINATED_CONTROLLER);
-                int capturedWhitePieces = piecesCounter.get(WHITE_PIECES_ELIMINATED_CONTROLLER);
+                int capturedBlackPieces = piecesCounter.get(blackPiecesEliminatedController);
+                int capturedWhitePieces = piecesCounter.get(whitePiecesEliminatedController);
 
                 if (getPiecesSize() - (capturedBlackPieces + capturedWhitePieces) == 2
                  && piece.getType() == 1 && nextPiece.getType() == 1){
@@ -736,28 +742,46 @@ public class GameManager {
 
             }
             else{
-                piecesCounter.put(LIMIT_OF_MOVES_BY_PIECES_CONTROLLER,
-                        piecesCounter.get(LIMIT_OF_MOVES_BY_PIECES_CONTROLLER)+1);
+                piecesCounter.put(limitOfMovesByPiecesController,
+                        piecesCounter.get(limitOfMovesByPiecesController)+1);
             }
 
 
             //Trocar a vez do jogo das peças
-            if (piece.team == BLACK_PIECE){
+            if (isBlackPieceInBoard){
+                if (piece.team == blackPiece){
 
-                int currentResult = piecesCounter.get(BLACK_PIECES_VALID_MOVES_COUNTER);
-                piecesCounter.put(BLACK_PIECES_VALID_MOVES_COUNTER, ++currentResult);
-                currentTeam = WHITE_PIECE;
+                    int currentResult = piecesCounter.get(blackPiecesValidMovesCounter);
+                    piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
+                    currentTeam = whitePiece;
 
+                }
+                else if (piece.team == whitePiece){
+                    int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
+                    piecesCounter.put(whitePiecesValidMovesCounter, ++currentResult);
+                    currentTeam = blackPiece;
+                }
+                else{
+                    currentTeam = blackPiece;
+                }
             }
-            else {
-                int currentResult = piecesCounter.get(WHITE_PIECES_VALID_MOVES_COUNTER);
-                piecesCounter.put(WHITE_PIECES_VALID_MOVES_COUNTER, ++currentResult);
-                currentTeam = BLACK_PIECE;
+            else{
+                if (piece.team == whitePiece){
+                    int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
+                    piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
+                    currentTeam = yellowPiece;
+                }
+                else if (piece.team == yellowPiece){
+                    currentTeam = whitePiece;
+                }
             }
 
 
-            int blackValidMoves = piecesCounter.get(BLACK_PIECES_VALID_MOVES_COUNTER);
-            int whiteValidMoves = piecesCounter.get(WHITE_PIECES_VALID_MOVES_COUNTER);
+
+
+            /*
+            int blackValidMoves = piecesCounter.get(blackPiecesValidMovesCounter);
+            int whiteValidMoves = piecesCounter.get(whitePiecesValidMovesCounter);
             if ((piece.getTeam() == 10 &&  (blackValidMoves + 1) % 3 == 0) || (piece.getTeam() == 20 &&  (whiteValidMoves + 1) % 3 == 0)){
                 for (Piece pieceHomer : piecesDictionary.values()) {
                     if (pieceHomer.getType() == 6){
@@ -779,24 +803,39 @@ public class GameManager {
                 }
             }
 
+             */
+
+
+
             changeJokerSkill();
+            increaseJohnMcClaneCounter();
 
             return true;
         }
       return false;
     }
-    private void movePiece(int y1, int y0, int x1, int x0, Piece piece){
+    private void movePiece(int y1, int y0, int x1, int x0, Piece piece, Piece nextPiece){
         updateUndoList();
-        chessMatrix.get(y1).put(x1,piece.id);
-        chessMatrix.get(y0).put(x0,0);
+
+        if (nextPiece != null){
+            if (nextPiece.getType() == 10 && piecesCounter.get(johnMcClaneCounter) % 4 != 0){
+                chessMatrix.get(y1).put(x1,piece.id);
+                chessMatrix.get(y0).put(x0,nextPiece.getId());
+                return;
+            }
+        }
+
+            chessMatrix.get(y1).put(x1,piece.id);
+            chessMatrix.get(y0).put(x0,0);
+
     }
     private void changeJokerSkill() {
-        int jokerNextSkillCounter = piecesCounter.get(JOKER_COPY_PIECE_COUNTER)+1;
+        int jokerNextSkillCounter = piecesCounter.get(jokerCopyPieceCounter)+1;
 
         if (jokerNextSkillCounter == 7){
             jokerNextSkillCounter = 1;
         }
-        piecesCounter.put(JOKER_COPY_PIECE_COUNTER, jokerNextSkillCounter);
+        piecesCounter.put(jokerCopyPieceCounter, jokerNextSkillCounter);
 
         for (Piece piece : piecesDictionary.values()) {
             if (piece.getType() == 7){
@@ -806,6 +845,10 @@ public class GameManager {
         }
     }
 
+    private void increaseJohnMcClaneCounter(){
+        int counter = piecesCounter.get(johnMcClaneCounter)+1;
+        piecesCounter.put(johnMcClaneCounter, counter);
+    }
     private void updateUndoList(){
         String content = "";
         for (HashMap<Integer,Integer> chessY : chessMatrix.values()) {
@@ -848,7 +891,7 @@ public class GameManager {
             result = "VENCERAM AS PRETAS";
             return true;
         }
-        else if (piecesCounter.get(LIMIT_OF_MOVES_BY_PIECES_CONTROLLER) == 10
+        else if (piecesCounter.get(limitOfMovesByPiecesController) == 10
                 || areOnlyKings){
             result = "EMPATE";
             return true;
@@ -863,14 +906,14 @@ public class GameManager {
         gameStatistic.add("Resultado: "+result);
         gameStatistic.add("---");
         gameStatistic.add("Equipa das Pretas");
-        gameStatistic.add(String.valueOf(getPiecesSize()/2-piecesCounter.get(WHITE_PIECES_ELIMINATED_CONTROLLER)));
-        gameStatistic.add(String.valueOf(piecesCounter.get(BLACK_PIECES_VALID_MOVES_COUNTER)));
-        gameStatistic.add(String.valueOf(piecesCounter.get(BLACK_PIECES_INVALID_MOVES_COUNTER)));
+        gameStatistic.add(String.valueOf(getPiecesSize()/2-piecesCounter.get(whitePiecesEliminatedController)));
+        gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesValidMovesCounter)));
+        gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesInvalidMovesCounter)));
 
         gameStatistic.add("Equipas das Brancas");
-        gameStatistic.add(String.valueOf(getPiecesSize()/2-piecesCounter.get(BLACK_PIECES_ELIMINATED_CONTROLLER)));
-        gameStatistic.add(String.valueOf(piecesCounter.get(WHITE_PIECES_VALID_MOVES_COUNTER)));
-        gameStatistic.add(String.valueOf(piecesCounter.get(WHITE_PIECES_INVALID_MOVES_COUNTER)));
+        gameStatistic.add(String.valueOf(getPiecesSize()/2-piecesCounter.get(blackPiecesEliminatedController)));
+        gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesValidMovesCounter)));
+        gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesInvalidMovesCounter)));
 
         return gameStatistic;
     }
@@ -887,6 +930,7 @@ public class GameManager {
     //Adiciona as informações das Peças numa lista de objectos
     private void insertPiecesInfo() throws InvalidGameInputException, InvalidTeamException {
             //Percorre a lista das peças
+
             for (int i = 0; i < getPiecesSize(); ++i) {
 
                 String[] pieceInfo = chessInfo.get(initialLine).split(":");
@@ -896,13 +940,13 @@ public class GameManager {
                     int type = Integer.parseInt(pieceInfo[1]);
                     int team = Integer.parseInt(pieceInfo[2]);
                     String nickName = pieceInfo[3];
-
                     if (team != 10 && team != 20 && team != 30){
                         throw new InvalidTeamException("Equipa inválida");
                     }
 
 
                     Piece peca = new Piece(id,type, team, nickName);
+
 
                     if (type == 6){
                         peca.setPieceInfo("Doh! zzzzzzz");
@@ -912,6 +956,11 @@ public class GameManager {
                         peca.setName("Joker/Rainha");
                         peca.updatePieceInfo();
                     }
+
+                    if (team == 10){
+                        isBlackPieceInBoard = true;
+                    }
+
                     piecesDictionary.put(id, peca);
                     ++initialLine;
                 }
@@ -924,6 +973,8 @@ public class GameManager {
 
 
             }
+
+            currentTeam = isBlackPieceInBoard ? 10 : 30;
     }
     private int getPiecesSize(){
         return Integer.parseInt(chessInfo.get(1));
@@ -1013,6 +1064,12 @@ public class GameManager {
 
     public List<Comparable> getHints(int x, int y) {
 
+        List<Comparable> comparables = new ArrayList<>();
+        int pieceId = chessMatrix.get(y).get(x);
+        Piece piece = piecesDictionary.get(pieceId);
+        if (piece.getType() == 10){
+            comparables.add(new Comparable(x,y,piece.getValue(),piece.getType()));
+        }
         /*
         int pieceId = chessMatrix.get(y).get(x);
         Piece piece = piecesDictionary.get(pieceId);

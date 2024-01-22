@@ -1,6 +1,6 @@
 package pt.ulusofona.lp2.deisichess
 
-class StatisticsKt() {
+class Statistics() {
 
 
     fun getStatsCalculator(statType: StatType) : (GameManager)->ArrayList<String>{

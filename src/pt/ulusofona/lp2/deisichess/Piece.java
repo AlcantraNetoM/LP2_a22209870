@@ -69,6 +69,10 @@ public class Piece {
                 name = "Joker/";
                 value = 0;
                 break;
+            case 10:
+                name = "John McClane";
+                value = 20;
+                break;
         }
 
         if (team == 10) {
@@ -97,8 +101,12 @@ public class Piece {
                 case 7:
                     avatarImgPath = "joker_black.png";
                     break;
+                case 10:
+                    avatarImgPath = "icons8-king-50-black.png";
+                    break;
             }
-        } else {
+        }
+        else if (team == 20){
             switch (type) {
                 case 0:
                     avatarImgPath = "crazy_emoji_white.png";
@@ -123,6 +131,40 @@ public class Piece {
                     break;
                 case 7:
                     avatarImgPath = "joker_yellow.png";
+                    break;
+                case 10:
+                    avatarImgPath = "icons8-king-50-white.png";
+                    break;
+            }
+        }
+        else {
+            switch (type) {
+                case 0:
+                    avatarImgPath = "crazy_emoji_yellow.png";
+                    break;
+                case 1:
+                    avatarImgPath = "rainha_yellow.png";
+                    break;
+                case 2:
+                    avatarImgPath = "ponei_magico_yellow.png";
+                    break;
+                case 3:
+                    avatarImgPath = "padre_vila_yellow.png";
+                    break;
+                case 4:
+                    avatarImgPath = "torre_h_yellow.png";
+                    break;
+                case 5:
+                    avatarImgPath = "torre_v_yellow.png";
+                    break;
+                case 6:
+                    avatarImgPath = "homer_yellow.png";
+                    break;
+                case 7:
+                    avatarImgPath = "joker_yellow.png";
+                    break;
+                case 10:
+                    avatarImgPath = "unknown-piece.png";
                     break;
             }
         }
