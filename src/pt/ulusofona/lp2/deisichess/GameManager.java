@@ -89,7 +89,7 @@ public class GameManager {
             piecesCounter.put(yellowPiecesInvalidMovesCounter, 0);
 
             piecesCounter.put(jokerCopyPieceCounter, 1);
-            piecesCounter.put(johnMcClaneCounter, 3);
+            piecesCounter.put(johnMcClaneCounter, 4);
             piecesCounter.put(homerPieceCounter, 0);
 
             typeDictionary.put(0, "Rei");
@@ -136,22 +136,23 @@ public class GameManager {
                     return true;
                 }
             }
+            else{
+                if (currentTeam == blackPiece) {
+                    int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
+                    piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
+                }
+                else if (currentTeam == whitePiece) {
+                    int counter = piecesCounter.get(whitePiecesInvalidMovesCounter) + 1;
+                    piecesCounter.put(whitePiecesInvalidMovesCounter, counter);
+                }
+                else if (currentTeam == yellowPiece) {
+                    int counter = piecesCounter.get(yellowPiecesInvalidMovesCounter) + 1;
+                    piecesCounter.put(yellowPiecesInvalidMovesCounter, counter);
+                }
+            }
 
         }
-        else{
-            if (currentTeam == blackPiece) {
-                int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
-                piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
-            }
-            else if (currentTeam == whitePiece) {
-                int counter = piecesCounter.get(whitePiecesInvalidMovesCounter) + 1;
-                piecesCounter.put(whitePiecesInvalidMovesCounter, counter);
-            }
-            else if (currentTeam == yellowPiece) {
-                int counter = piecesCounter.get(yellowPiecesInvalidMovesCounter) + 1;
-                piecesCounter.put(yellowPiecesInvalidMovesCounter, counter);
-            }
-        }
+
       return false;
     }
 
