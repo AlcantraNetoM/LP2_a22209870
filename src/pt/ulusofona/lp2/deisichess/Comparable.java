@@ -24,10 +24,10 @@ public class Comparable implements java.lang.Comparable<Comparable> {
             return 0;
         }
         else if (this.value > chessCoord.getValue()) {
-            return 1;
+            return -1;
         }
         else{
-            return -1;
+            return 1;
         }
     }
 

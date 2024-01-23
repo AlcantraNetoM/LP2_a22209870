@@ -93,7 +93,7 @@ public class GameManager {
             typeDictionary.put(3, "Padre da Vila");
             typeDictionary.put(4, "TorreHor");
             typeDictionary.put(5, "TorreVert");
-            typeDictionary.put(6, "Homer");
+            typeDictionary.put(6, "Homer Simpson");
             typeDictionary.put(7, "Joker/");
 
     }
@@ -896,6 +896,11 @@ public class GameManager {
                 nextPiece.setCoordinateY(y0);
                 nextPiece.updatePieceInfo();
                 return;
+            }
+            else{
+                nextPiece.setCoordinateX(-1);
+                nextPiece.setCoordinateY(-1);
+                nextPiece.updatePieceInfo();
             }
         }
         chessMatrix.get(y1).put(x1,piece.getId());

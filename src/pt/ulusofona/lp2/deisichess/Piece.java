@@ -17,6 +17,7 @@ public class Piece {
 
     private int coordinateY;
 
+
     //CAMINHO DAS IMAGENS DAS PEÇAS
     //Put the image in src/Image folder then use filename with the xtension
 
@@ -35,14 +36,26 @@ public class Piece {
 
 
     public void updatePieceInfo(){
+
         if (getType() == 0){
-            pieceInfo = id+" | "+name+" | (infinito) | "+team+" | "+nickName+" @ ("+getCoordinateX()+", "+getCoordinateY()+")";
+            pieceInfo = id+" | "+name+" | (infinito) | "+team+" | "+nickName+" @ "+getCoordinates();
         }
         else{
-            pieceInfo = id+" | "+name+" | "+value+" | "+team+" | "+nickName+" @ ("+getCoordinateX()+", "+getCoordinateY()+")";
+            pieceInfo = id+" | "+name+" | "+value+" | "+team+" | "+nickName+" @ "+getCoordinates();
         }
 
     }
+
+
+    public String getCoordinates(){
+        if (isPieceCaptured()){
+           return "(n/a)";
+        }else{
+            return "("+getCoordinateX()+", "+getCoordinateY()+")";
+        }
+    }
+
+
     private void fillComponents() {
 
         switch (type) {
@@ -230,6 +243,16 @@ public class Piece {
 
     public int getCoordinateY() {
         return coordinateY;
+    }
+
+
+    public boolean isPieceCaptured(){
+        if (getCoordinateX() == -1 && getCoordinateY() == -1){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void setCoordinateX(int coordinateX) {
