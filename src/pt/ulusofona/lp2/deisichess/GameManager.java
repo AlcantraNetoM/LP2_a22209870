@@ -160,15 +160,15 @@ public class GameManager {
 
                 if (nextPiece != null && nextPiece.getTeam() == piece.getTeam()) {
                     if (piece.getTeam() == blackPiece) {
-                        int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter)+1;
+                        int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter);
                         piecesCounter.put(blackPiecesInvalidMovesCounter, ++currentResult);
                     }
                     else if (piece.getTeam() == whitePiece){
-                        int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter)+1;
+                        int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter);
                         piecesCounter.put(whitePiecesInvalidMovesCounter, ++currentResult);
                     }
                     else if (piece.getTeam() == yellowPiece){
-                        int currentResult = piecesCounter.get(yellowPiecesInvalidMovesCounter)+1;
+                        int currentResult = piecesCounter.get(yellowPiecesInvalidMovesCounter);
                         piecesCounter.put(yellowPiecesInvalidMovesCounter, ++currentResult);
                     }
                     return false;
@@ -837,7 +837,8 @@ public class GameManager {
                         return false;
                     }
 
-                } catch (NullPointerException nullPointerException) {
+                }
+                catch (NullPointerException nullPointerException) {
                     nullPointerException.printStackTrace();
                 }
 
@@ -889,7 +890,6 @@ public class GameManager {
 
 
                 changeJokerSkill();
-                increaseJohnMcClaneCounter();
                 increaseHomerCounter();
 
                 return true;
@@ -972,10 +972,6 @@ public class GameManager {
         }
     }
 
-    private void increaseJohnMcClaneCounter(){
-        int counter = piecesCounter.get(johnMcClaneCounter)+1;
-        piecesCounter.put(johnMcClaneCounter, counter);
-    }
     private void updateUndoList(){
         String content = "";
         for (HashMap<Integer,Integer> chessY : chessMatrix.values()) {
@@ -1059,9 +1055,12 @@ public class GameManager {
 
         if (teamsList.contains(blackPiece)){
             team1 = "Pretas";
-            team1CapturesNumber = String.valueOf(piecesCounter.get(whitePiecesEliminatedController));
+            team1CapturesNumber = teamsList.contains(whitePiece) ?
+                    String.valueOf(piecesCounter.get(whitePiecesEliminatedController)) :
+                    String.valueOf(piecesCounter.get(yellowPieceEliminatedController));
             team1ValidMoves = String.valueOf(piecesCounter.get(blackPiecesValidMovesCounter));
             team1InvalidMoves = String.valueOf(piecesCounter.get(blackPiecesInvalidMovesCounter));
+
             if (teamsList.contains(whitePiece)){
                 team2 = "Brancas";
                 team2CapturesNumber = String.valueOf(piecesCounter.get(blackPiecesEliminatedController));
@@ -1265,8 +1264,8 @@ public class GameManager {
 
                     if (pieceId != 0) {
                         Piece piece = piecesDictionary.get(pieceId);
-                        piece.setCoordinateX(i);
-                        piece.setCoordinateY(j);
+                        piece.setCoordinateX(j);
+                        piece.setCoordinateY(i);
                         piece.updatePieceInfo();
                     }
                 }
