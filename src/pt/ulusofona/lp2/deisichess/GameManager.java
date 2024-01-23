@@ -152,6 +152,20 @@ public class GameManager {
             }
 
         }
+        else{
+            if (currentTeam == blackPiece) {
+                int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
+                piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
+            }
+            else if (currentTeam == whitePiece) {
+                int counter = piecesCounter.get(whitePiecesInvalidMovesCounter) + 1;
+                piecesCounter.put(whitePiecesInvalidMovesCounter, counter);
+            }
+            else if (currentTeam == yellowPiece) {
+                int counter = piecesCounter.get(yellowPiecesInvalidMovesCounter) + 1;
+                piecesCounter.put(yellowPiecesInvalidMovesCounter, counter);
+            }
+        }
 
       return false;
     }
