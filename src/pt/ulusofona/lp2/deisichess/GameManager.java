@@ -18,14 +18,20 @@ public class GameManager {
 
     private final int blackPiecesEliminatedController = 0;
     private final int whitePiecesEliminatedController = 1;
-    private final int limitOfMovesByPiecesController = 2;
-    private final int blackPiecesValidMovesCounter = 3;
-    private final int whitePiecesValidMovesCounter = 4;
-    private final int blackPiecesInvalidMovesCounter = 5;
-    private final int whitePiecesInvalidMovesCounter = 6;
-    private final int homerPieceCounter = 7;
-    private final int jokerCopyPieceCounter = 8;
-    private final int johnMcClaneCounter = 9;
+
+    private final int yellowPieceEliminatedController = 2;
+    private final int limitOfMovesByPiecesController = 3;
+    private final int blackPiecesValidMovesCounter = 4;
+    private final int whitePiecesValidMovesCounter = 5;
+
+    private final int yellowPiecesValidMovesCounter = 6;
+    private final int blackPiecesInvalidMovesCounter = 7;
+    private final int whitePiecesInvalidMovesCounter = 8;
+
+    private final int yellowPiecesInvalidMovesCounter = 9;
+    private final int homerPieceCounter = 10;
+    private final int jokerCopyPieceCounter = 11;
+    private final int johnMcClaneCounter = 12;
 
 
     ArrayList<String> undoList;
@@ -67,6 +73,7 @@ public class GameManager {
             //Controla o número de peças eliminadas
             piecesCounter.put(blackPiecesEliminatedController, 0);
             piecesCounter.put(whitePiecesEliminatedController, 0);
+            piecesCounter.put(yellowPieceEliminatedController, 0);
 
             //Controla se as 10 jogadas foram feitas
             piecesCounter.put(limitOfMovesByPiecesController,0);
@@ -74,13 +81,15 @@ public class GameManager {
             //Conta o número de jogadas válidas de cada equipa
             piecesCounter.put(blackPiecesValidMovesCounter, 0);
             piecesCounter.put(whitePiecesValidMovesCounter, 0);
+            piecesCounter.put(yellowPiecesValidMovesCounter, 0);
 
             //Conta o número de jogadas inválidas de cada equipa
             piecesCounter.put(blackPiecesInvalidMovesCounter, 0);
             piecesCounter.put(whitePiecesInvalidMovesCounter, 0);
+            piecesCounter.put(yellowPiecesInvalidMovesCounter, 0);
 
             piecesCounter.put(jokerCopyPieceCounter, 1);
-            piecesCounter.put(johnMcClaneCounter, 2);
+            piecesCounter.put(johnMcClaneCounter, 3);
             piecesCounter.put(homerPieceCounter, 0);
 
             typeDictionary.put(0, "Rei");
@@ -113,9 +122,14 @@ public class GameManager {
                     if (piece.getTeam() == blackPiece) {
                         int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
                         piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
-                    } else if (piece.getTeam() == whitePiece) {
+                    }
+                    else if (piece.getTeam() == whitePiece) {
                         int counter = piecesCounter.get(whitePiecesInvalidMovesCounter) + 1;
                         piecesCounter.put(whitePiecesInvalidMovesCounter, counter);
+                    }
+                    else if (piece.getTeam() == yellowPiece) {
+                        int counter = piecesCounter.get(yellowPiecesInvalidMovesCounter) + 1;
+                        piecesCounter.put(yellowPiecesInvalidMovesCounter, counter);
                     }
                 }
                 else {
@@ -123,6 +137,20 @@ public class GameManager {
                 }
             }
 
+        }
+        else{
+            if (currentTeam == blackPiece) {
+                int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
+                piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
+            }
+            else if (currentTeam == whitePiece) {
+                int counter = piecesCounter.get(whitePiecesInvalidMovesCounter) + 1;
+                piecesCounter.put(whitePiecesInvalidMovesCounter, counter);
+            }
+            else if (currentTeam == yellowPiece) {
+                int counter = piecesCounter.get(yellowPiecesInvalidMovesCounter) + 1;
+                piecesCounter.put(yellowPiecesInvalidMovesCounter, counter);
+            }
         }
       return false;
     }
@@ -132,11 +160,16 @@ public class GameManager {
 
                 if (nextPiece != null && nextPiece.getTeam() == piece.getTeam()) {
                     if (piece.getTeam() == blackPiece) {
-                        int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter);
+                        int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter)+1;
                         piecesCounter.put(blackPiecesInvalidMovesCounter, ++currentResult);
-                    } else {
-                        int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter);
+                    }
+                    else if (piece.getTeam() == whitePiece){
+                        int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter)+1;
                         piecesCounter.put(whitePiecesInvalidMovesCounter, ++currentResult);
+                    }
+                    else if (piece.getTeam() == yellowPiece){
+                        int currentResult = piecesCounter.get(yellowPiecesInvalidMovesCounter)+1;
+                        piecesCounter.put(yellowPiecesInvalidMovesCounter, ++currentResult);
                     }
                     return false;
                 }
@@ -830,9 +863,14 @@ public class GameManager {
                         piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
                         currentTeam = teamsList.contains(whitePiece) ? whitePiece : yellowPiece;
                     }
-                    else if (piece.getTeam() == whitePiece || piece.getTeam() == yellowPiece) {
+                    else if (piece.getTeam() == whitePiece) {
                         int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
                         piecesCounter.put(whitePiecesValidMovesCounter, ++currentResult);
+                        currentTeam = blackPiece;
+                    }
+                    else if (piece.getTeam() == yellowPiece){
+                        int currentResult = piecesCounter.get(yellowPiecesValidMovesCounter);
+                        piecesCounter.put(yellowPiecesValidMovesCounter, ++currentResult);
                         currentTeam = blackPiece;
                     }
                 }
@@ -843,6 +881,8 @@ public class GameManager {
                         currentTeam = yellowPiece;
                     }
                     else if (piece.getTeam() == yellowPiece) {
+                        int currentResult = piecesCounter.get(yellowPiecesValidMovesCounter);
+                        piecesCounter.put(yellowPiecesValidMovesCounter, ++currentResult);
                         currentTeam = whitePiece;
                     }
                 }
@@ -887,7 +927,8 @@ public class GameManager {
                     piecesCounter.put(whitePiecesEliminatedController,counter);
                 }
                 else if(nextPiece.getTeam() == yellowPiece){
-                   //
+                   int counter = piecesCounter.get(yellowPieceEliminatedController)+1;
+                   piecesCounter.put(yellowPieceEliminatedController,counter);
                 }
                 nextPiece.setCoordinateX(-1);
                 nextPiece.setCoordinateY(-1);
@@ -1001,20 +1042,63 @@ public class GameManager {
         return false;
     }
     public ArrayList<String> getGameResults(){
+
+
+
         ArrayList<String> gameStatistic = new ArrayList<>();
 
+        String team1 = "";
+        String team1CapturesNumber = "";
+        String team1ValidMoves = "";
+        String team1InvalidMoves = "";
+
+        String team2 = "";
+        String team2CapturesNumber = "";
+        String team2ValidMoves = "";
+        String team2InvalidMoves = "";
+
+        if (teamsList.contains(blackPiece)){
+            team1 = "Pretas";
+            team1CapturesNumber = String.valueOf(piecesCounter.get(whitePiecesEliminatedController));
+            team1ValidMoves = String.valueOf(piecesCounter.get(blackPiecesValidMovesCounter));
+            team1InvalidMoves = String.valueOf(piecesCounter.get(blackPiecesInvalidMovesCounter));
+            if (teamsList.contains(whitePiece)){
+                team2 = "Brancas";
+                team2CapturesNumber = String.valueOf(piecesCounter.get(blackPiecesEliminatedController));
+                team2ValidMoves = String.valueOf(piecesCounter.get(whitePiecesValidMovesCounter));
+                team2InvalidMoves = String.valueOf(piecesCounter.get(whitePiecesInvalidMovesCounter));
+            }
+            else if (teamsList.contains(yellowPiece)){
+                team2 = "Amarelas";
+                team2CapturesNumber = String.valueOf(piecesCounter.get(blackPiecesEliminatedController));
+                team2ValidMoves = String.valueOf(piecesCounter.get(yellowPiecesValidMovesCounter));
+                team2InvalidMoves = String.valueOf(piecesCounter.get(yellowPiecesInvalidMovesCounter));
+            }
+
+        }
+        else {
+            team1 = "Amarelas";
+            team1CapturesNumber = String.valueOf(piecesCounter.get(whitePiecesEliminatedController));
+            team1ValidMoves = String.valueOf(piecesCounter.get(yellowPiecesValidMovesCounter));
+            team1InvalidMoves = String.valueOf(piecesCounter.get(yellowPiecesInvalidMovesCounter));
+
+            team2 = "Brancas";
+            team2CapturesNumber = String.valueOf(piecesCounter.get(yellowPieceEliminatedController));
+            team2ValidMoves = String.valueOf(piecesCounter.get(whitePiecesValidMovesCounter));
+            team2InvalidMoves = String.valueOf(piecesCounter.get(whitePiecesInvalidMovesCounter));
+        }
         gameStatistic.add("JOGO DE CRAZY CHESS");
         gameStatistic.add("Resultado: "+result);
         gameStatistic.add("---");
-        gameStatistic.add("Equipa das Pretas");
-        gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesEliminatedController)));
-        gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesValidMovesCounter)));
-        gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesInvalidMovesCounter)));
+        gameStatistic.add("Equipa das "+team1);
+        gameStatistic.add(team1CapturesNumber);
+        gameStatistic.add(team1ValidMoves);
+        gameStatistic.add(team1InvalidMoves);
 
-        gameStatistic.add("Equipa das Brancas");
-        gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesEliminatedController)));
-        gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesValidMovesCounter)));
-        gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesInvalidMovesCounter)));
+        gameStatistic.add("Equipa das "+team2);
+        gameStatistic.add(team2CapturesNumber);
+        gameStatistic.add(team2ValidMoves);
+        gameStatistic.add(team2InvalidMoves);
 
         return gameStatistic;
     }
