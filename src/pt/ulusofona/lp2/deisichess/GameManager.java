@@ -84,8 +84,8 @@ public class GameManager {
             piecesCounter.put(whitePiecesInvalidMovesCounter, 0);
 
             piecesCounter.put(jokerCopyPieceCounter, 1);
-            piecesCounter.put(johnMcClaneCounter, 1);
-            piecesCounter.put(homerPieceCounter, 1);
+            piecesCounter.put(johnMcClaneCounter, 3);
+            piecesCounter.put(homerPieceCounter, 0);
 
             typeDictionary.put(0, "Rei");
             typeDictionary.put(1, "Rainha");
@@ -429,7 +429,7 @@ public class GameManager {
                         //Coloca a peça Homer Simpson na nova Posição
                         else if (piece.getType() == 6) {
 
-                            if (piecesCounter.get(homerPieceCounter) % 3 == 0) {
+                            if (piecesCounter.get(homerPieceCounter) % 3 != 0) {
                                 if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 1) {
                                     for (int i = x0, j = y0; i != x1; ) {
                                         if (i < x1 && j < y1) {
@@ -885,7 +885,7 @@ public class GameManager {
         updateUndoList();
 
         if (nextPiece != null){
-            if (nextPiece.getType() == 10 && piecesCounter.get(johnMcClaneCounter) % 4 != 0){
+            if (nextPiece.getType() == 10 && piecesCounter.get(johnMcClaneCounter) != 0){
                 chessMatrix.get(y1).put(x1,piece.getId());
                 chessMatrix.get(y0).put(x0,nextPiece.getId());
                 piece.setCoordinateX(x1);
@@ -895,6 +895,10 @@ public class GameManager {
                 nextPiece.setCoordinateX(x0);
                 nextPiece.setCoordinateY(y0);
                 nextPiece.updatePieceInfo();
+
+                int counter = piecesCounter.get(johnMcClaneCounter)-1;
+                piecesCounter.put(johnMcClaneCounter, counter);
+
                 return;
             }
             else{
@@ -916,7 +920,7 @@ public class GameManager {
         piecesCounter.put(homerPieceCounter, counter);
         for (Piece piece : piecesDictionary.values()) {
             if (piece.getType() == 6){
-               if (counter % 3 == 0){
+               if (counter % 3 != 0){
                    piece.updatePieceInfo();
                }else{
                    piece.setPieceInfo("Doh! zzzzzz");

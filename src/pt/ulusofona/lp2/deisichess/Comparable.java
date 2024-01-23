@@ -36,7 +36,7 @@ public class Comparable implements java.lang.Comparable<Comparable> {
             return "Sou o John McClane. Yippee ki yay. Sou duro de roer, mas não me sei mover";
         }
 
-        return "("+x+", "+y+") -> "+value;
+        return "("+x+","+y+") -> "+value;
     }
 
 }
