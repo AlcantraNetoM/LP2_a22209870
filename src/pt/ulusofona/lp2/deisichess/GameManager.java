@@ -102,7 +102,7 @@ public class GameManager {
     }
 
     //Fazer jogada
-    public boolean move(int x0, int y0, int x1, int y1){
+    public boolean move(int x0, int y0, int x1, int y1) throws InvalidGameInputException{
 
 
         if ((x0 >= 0 && x0 < getBoardSize()) && (x1 >= 0 && x1 < getBoardSize()) &&
@@ -466,8 +466,10 @@ public class GameManager {
                                 } else {
                                     return false;
                                 }
-                            } else {
-                                return false;
+                            }
+                            else {
+                                throw new InvalidGameInputException("Meu teste");
+                                //return false;
                             }
 
                         /*
