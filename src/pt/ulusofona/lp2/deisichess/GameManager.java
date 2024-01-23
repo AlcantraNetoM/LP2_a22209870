@@ -181,8 +181,22 @@ public class GameManager {
                 //imprimirJogadasInvalidas();
             }
 
-        }
 
+        }
+        else{
+            if (currentTeam == blackPiece) {
+                int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
+                piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
+            }
+            else if (currentTeam == whitePiece) {
+                int counter = piecesCounter.get(whitePiecesInvalidMovesCounter) + 1;
+                piecesCounter.put(whitePiecesInvalidMovesCounter, counter);
+            }
+            else if (currentTeam == yellowPiece) {
+                int counter = piecesCounter.get(yellowPiecesInvalidMovesCounter) + 1;
+                piecesCounter.put(yellowPiecesInvalidMovesCounter, counter);
+            }
+        }
 
       return false;
     }
@@ -1139,7 +1153,7 @@ public class GameManager {
                     int team = Integer.parseInt(pieceInfo[2]);
                     String nickName = pieceInfo[3];
                     if (team != 10 && team != 20 && team != 30){
-                        throw new InvalidTeamException("Equipa inválida");
+                        throw new InvalidTeamException("Equipa inválida",nickName);
                     }
 
 

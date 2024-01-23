@@ -3,12 +3,14 @@ package pt.ulusofona.lp2.deisichess;
 public class InvalidTeamException extends Exception{
 
 
-    public InvalidTeamException(String message){
+    String nickName;
+    public InvalidTeamException(String message, String nickName){
         super(message);
+        this.nickName = nickName;
     }
 
     public String getInvalidPieceName(){
-        return null;
+        return nickName;
     }
 
 }
