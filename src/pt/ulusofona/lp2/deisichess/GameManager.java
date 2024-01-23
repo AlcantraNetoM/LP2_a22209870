@@ -802,24 +802,25 @@ public class GameManager {
 
 
                 //Trocar a vez do jogo das peças
-                if (isBlackPieceInBoard){
+                if (teamsList.contains(blackPiece)){
                     if (piece.getTeam() == blackPiece){
-
                         int currentResult = piecesCounter.get(blackPiecesValidMovesCounter);
                         piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
-                        currentTeam = whitePiece;
-
+                        currentTeam = teamsList.contains(whitePiece) ? whitePiece : yellowPiece;
                     }
+
                     else if (piece.getTeam() == whitePiece){
                         int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
                         piecesCounter.put(whitePiecesValidMovesCounter, ++currentResult);
                         currentTeam = blackPiece;
                     }
-                    else{
+
+                    else if (piece.getTeam() == yellowPiece){
                         currentTeam = blackPiece;
                     }
                 }
-                else{
+
+                else {
                     if (piece.getTeam() == whitePiece){
                         int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
                         piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
