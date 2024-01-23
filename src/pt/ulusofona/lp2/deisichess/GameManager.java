@@ -468,8 +468,7 @@ public class GameManager {
                                 }
                             }
                             else {
-                                throw new InvalidGameInputException("Meu teste");
-                                //return false;
+                                return false;
                             }
 
                         /*
