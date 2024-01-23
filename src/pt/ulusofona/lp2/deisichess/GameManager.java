@@ -107,6 +107,12 @@ public class GameManager {
     }
 
     //Fazer jogada
+    private void imprimirJogadasInvalidas(){
+        System.out.println("Black invalido: "+piecesCounter.get(blackPiecesInvalidMovesCounter));
+        System.out.println("White invalido: "+piecesCounter.get(whitePiecesInvalidMovesCounter));
+        System.out.println("Yellow invalido: "+piecesCounter.get(yellowPiecesInvalidMovesCounter));
+
+    }
     public boolean move(int x0, int y0, int x1, int y1){
 
 
@@ -121,35 +127,38 @@ public class GameManager {
 
             if (piece != null) {
                 if (nextPiece != null && nextPiece.getTeam() == piece.getTeam()) {
-                    if (piece.getTeam() == blackPiece) {
+                    if (currentTeam == blackPiece) {
                         int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter);
                         piecesCounter.put(blackPiecesInvalidMovesCounter, ++currentResult);
                     }
-                    else if (piece.getTeam() == whitePiece){
+                    else if (currentTeam == whitePiece){
                         int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter);
                         piecesCounter.put(whitePiecesInvalidMovesCounter, ++currentResult);
                     }
-                    else if (piece.getTeam() == yellowPiece){
+                    else if (currentTeam == yellowPiece){
                         int currentResult = piecesCounter.get(yellowPiecesInvalidMovesCounter);
                         piecesCounter.put(yellowPiecesInvalidMovesCounter, ++currentResult);
                     }
+                    //imprimirJogadasInvalidas();
+
                     return false;
                 }
 
                 if (!moveDone(piece, nextPiece, x0, y0, x1, y1)) {
                     //Contar jogadas invalidas
-                    if (piece.getTeam() == blackPiece) {
+                    if (currentTeam == blackPiece) {
                         int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
                         piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
                     }
-                    else if (piece.getTeam() == whitePiece) {
+                    else if (currentTeam == whitePiece) {
                         int counter = piecesCounter.get(whitePiecesInvalidMovesCounter) + 1;
                         piecesCounter.put(whitePiecesInvalidMovesCounter, counter);
                     }
-                    else if (piece.getTeam() == yellowPiece) {
+                    else if (currentTeam == yellowPiece) {
                         int counter = piecesCounter.get(yellowPiecesInvalidMovesCounter) + 1;
                         piecesCounter.put(yellowPiecesInvalidMovesCounter, counter);
                     }
+                    //imprimirJogadasInvalidas();
                 }
                 else {
                     return true;
@@ -169,6 +178,7 @@ public class GameManager {
                     int counter = piecesCounter.get(yellowPiecesInvalidMovesCounter) + 1;
                     piecesCounter.put(yellowPiecesInvalidMovesCounter, counter);
                 }
+                //imprimirJogadasInvalidas();
             }
 
         }
