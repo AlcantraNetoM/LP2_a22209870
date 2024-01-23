@@ -902,7 +902,7 @@ public class GameManager {
         updateUndoList();
 
         if (nextPiece != null){
-            if (nextPiece.getType() == 10 && piecesCounter.get(johnMcClaneCounter) != 0){
+            if (nextPiece.getType() == 10 && nextPiece.isJonhMcClainProtected()){
                 chessMatrix.get(y1).put(x1,piece.getId());
                 chessMatrix.get(y0).put(x0,nextPiece.getId());
                 piece.setCoordinateX(x1);
@@ -913,8 +913,7 @@ public class GameManager {
                 nextPiece.setCoordinateY(y0);
                 nextPiece.updatePieceInfo();
 
-                int counter = piecesCounter.get(johnMcClaneCounter)-1;
-                piecesCounter.put(johnMcClaneCounter, counter);
+
 
                 return;
             }

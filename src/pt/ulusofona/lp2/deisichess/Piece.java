@@ -12,10 +12,10 @@ public class Piece {
     private int team;
     private String nickName;
     private String pieceInfo;
-
     private int coordinateX;
-
     private int coordinateY;
+
+    private int johnMcClainCounter = 3;
 
 
     //CAMINHO DAS IMAGENS DAS PEÇAS
@@ -262,4 +262,15 @@ public class Piece {
     public void setCoordinateY(int coordinateY) {
         this.coordinateY = coordinateY;
     }
+
+    public boolean isJonhMcClainProtected(){
+        if (johnMcClainCounter != 0){
+            --johnMcClainCounter;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }
