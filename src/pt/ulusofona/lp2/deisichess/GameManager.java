@@ -756,7 +756,48 @@ public class GameManager {
 
                             }
                             else if (piecesCounter.get(jokerCopyPieceCounter) == 6) {
-                                return false;
+                                if (piecesCounter.get(homerPieceCounter) % 3 == 0){
+                                        if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 1) {
+                                            for (int i = x0, j = y0; i != x1; ) {
+                                                if (i < x1 && j < y1) {
+                                                    ++i;
+                                                    ++j;
+                                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                                        return false;
+                                                    }
+
+                                                }
+                                                else if (i > x1 && j > y1) {
+                                                    --i;
+                                                    --j;
+                                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                                        return false;
+                                                    }
+                                                }
+                                                else if (i > x1 && j < y1) {
+                                                    --i;
+                                                    ++j;
+                                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                                        return false;
+                                                    }
+                                                }
+                                                else if (i < x1 && j > y1) {
+                                                    ++i;
+                                                    --j;
+                                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                                        return false;
+                                                    }
+                                                }
+                                            }
+                                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                                        }
+                                        else {
+                                            return false;
+                                        }
+                                    }
+                                else{
+                                    return false;
+                                }
                             }
                     }
 
