@@ -1234,7 +1234,7 @@ public class GameManager {
                         if (chessMatrix.get(j).get(i) != 0) {
                             int nextPieceId = chessMatrix.get(j).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, j, nextPiece.getValue(),nextPiece.getType()));
                             }
                         }
@@ -1249,7 +1249,7 @@ public class GameManager {
                         } else {
                             int nextPieceId = chessMatrix.get(j).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, j, nextPiece.getValue(),nextPiece.getType()));
                             }
                             break;
@@ -1272,7 +1272,7 @@ public class GameManager {
                         if (chessMatrix.get(j).get(i) != 0) {
                             int nextPieceId = chessMatrix.get(j).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, j, nextPiece.getValue(),nextPiece.getType()));
                             }
                         }
@@ -1288,7 +1288,7 @@ public class GameManager {
                         else {
                             int nextPieceId = chessMatrix.get(j).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, j, nextPiece.getValue(),nextPiece.getType()));
                             }
                             break;
@@ -1311,7 +1311,7 @@ public class GameManager {
                         if (chessMatrix.get(j).get(i) != 0) {
                             int nextPieceId = chessMatrix.get(j).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, j, nextPiece.getValue(),nextPiece.getType()));
                             }
                         }
@@ -1327,7 +1327,7 @@ public class GameManager {
                         else {
                             int nextPieceId = chessMatrix.get(j).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, j, nextPiece.getValue(),nextPiece.getType()));
                             }
                             break;
@@ -1351,7 +1351,7 @@ public class GameManager {
                         if (chessMatrix.get(j).get(i) != 0) {
                             int nextPieceId = chessMatrix.get(j).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, j, nextPiece.getValue(),nextPiece.getType()));
                             }
                         }
@@ -1367,7 +1367,7 @@ public class GameManager {
                         else {
                             int nextPieceId = chessMatrix.get(j).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, j, nextPiece.getValue(),nextPiece.getType()));
                             }
                             break;
@@ -1388,7 +1388,7 @@ public class GameManager {
                         if (chessMatrix.get(y).get(i) != 0) {
                             int nextPieceId = chessMatrix.get(y).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, y, nextPiece.getValue(), nextPiece.getType()));
                             }
                         }
@@ -1405,7 +1405,7 @@ public class GameManager {
                         else {
                             int nextPieceId = chessMatrix.get(y).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, y, nextPiece.getValue(), nextPiece.getType()));
                             }
                             break;
@@ -1422,7 +1422,7 @@ public class GameManager {
                         if (chessMatrix.get(y).get(i) != 0) {
                             int nextPieceId = chessMatrix.get(y).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, y, nextPiece.getValue(), nextPiece.getType()));
                             }
                         }
@@ -1438,7 +1438,7 @@ public class GameManager {
                         else {
                             int nextPieceId = chessMatrix.get(y).get(i);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(i, y, nextPiece.getValue(), nextPiece.getType()));
                             }
                             break;
@@ -1458,7 +1458,7 @@ public class GameManager {
                         if (chessMatrix.get(j).get(x) != 0) {
                             int nextPieceId = chessMatrix.get(j).get(x);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(x, j, nextPiece.getValue(), nextPiece.getType()));
                             }
                         }
@@ -1474,7 +1474,7 @@ public class GameManager {
                         else {
                             int nextPieceId = chessMatrix.get(j).get(x);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(x, j, nextPiece.getValue(), nextPiece.getType()));
                             }
                             break;
@@ -1491,7 +1491,7 @@ public class GameManager {
                         if (chessMatrix.get(j).get(x) != 0) {
                             int nextPieceId = chessMatrix.get(j).get(x);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(x, j, nextPiece.getValue(), nextPiece.getType()));
                             }
                         }
@@ -1507,7 +1507,7 @@ public class GameManager {
                         else {
                             int nextPieceId = chessMatrix.get(j).get(x);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(x, j, nextPiece.getValue(), nextPiece.getType()));
                             }
                             break;
@@ -1804,7 +1804,7 @@ public class GameManager {
                         if (chessMatrix.get(j).get(x) != 0) {
                             int nextPieceId = chessMatrix.get(j).get(x);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(x, j, nextPiece.getValue(), nextPiece.getType()));
                             }
                         }
@@ -1820,7 +1820,7 @@ public class GameManager {
                         else {
                             int nextPieceId = chessMatrix.get(j).get(x);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(x, j, nextPiece.getValue(), nextPiece.getType()));
                             }
                             break;
@@ -1832,7 +1832,7 @@ public class GameManager {
                         if (chessMatrix.get(j).get(x) != 0) {
                             int nextPieceId = chessMatrix.get(j).get(x);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(x, j, nextPiece.getValue(), nextPiece.getType()));
                             }
                         }
@@ -1848,7 +1848,7 @@ public class GameManager {
                         else {
                             int nextPieceId = chessMatrix.get(j).get(x);
                             Piece nextPiece = piecesDictionary.get(nextPieceId);
-                            if (nextPiece.getTeam() != piece.getTeam() && nextPiece.getType() != 1) {
+                            if (nextPiece.getTeam() != piece.getTeam()) {
                                 comparables.add(new Comparable(x, j, nextPiece.getValue(), nextPiece.getType()));
                             }
                             break;
@@ -1856,8 +1856,7 @@ public class GameManager {
                     }
 
             }
-
-            comparables.add(new Comparable(x,y,piece.getValue(),piece.getType()));
+            
         }
         else if (piece.getType() == 10){
             comparables.add(new Comparable(x,y,piece.getValue(),piece.getType()));
