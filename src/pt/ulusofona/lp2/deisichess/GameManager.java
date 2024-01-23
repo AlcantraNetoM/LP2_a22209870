@@ -830,7 +830,8 @@ public class GameManager {
                         } else if (piece.getTeam() == yellowPiece) {
                             currentTeam = blackPiece;
                         }
-                    } else {
+                    }
+                    else {
                         if (piece.getTeam() == whitePiece) {
                             int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
                             piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
@@ -1173,6 +1174,30 @@ public class GameManager {
 
                 }
             }
+
+            if (teamsList.contains(blackPiece)) {
+                if (currentTeam == blackPiece) {
+                    int currentResult = piecesCounter.get(blackPiecesValidMovesCounter);
+                    piecesCounter.put(blackPiecesValidMovesCounter, --currentResult);
+                    currentTeam = teamsList.contains(whitePiece) ? whitePiece : yellowPiece;
+                }
+                else if (currentTeam == whitePiece) {
+                    int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
+                    piecesCounter.put(whitePiecesValidMovesCounter, --currentResult);
+                    currentTeam = blackPiece;
+                } else if (currentTeam == yellowPiece) {
+                    currentTeam = blackPiece;
+                }
+            }
+            else {
+                if (currentTeam == whitePiece) {
+                    int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
+                    piecesCounter.put(blackPiecesValidMovesCounter, --currentResult);
+                    currentTeam = yellowPiece;
+                } else if (currentTeam == yellowPiece) {
+                    currentTeam = whitePiece;
+                }
+            }
             undoList.remove(undoList.size()-1);
         }
     }
@@ -1485,6 +1510,8 @@ public class GameManager {
                 }
             }
 
+            comparables.add(new Comparable(x,y,piece.getValue(),piece.getType()));
+
         }
         else if (piece.getType() == 1) {
 
@@ -1758,6 +1785,8 @@ public class GameManager {
                 }
             }
 
+            comparables.add(new Comparable(x,y,piece.getValue(),piece.getType()));
+
         }
         else if (piece.getType() == 5){
             //Vertical
@@ -1818,6 +1847,8 @@ public class GameManager {
                     }
 
             }
+
+            comparables.add(new Comparable(x,y,piece.getValue(),piece.getType()));
         }
         else if (piece.getType() == 10){
             comparables.add(new Comparable(x,y,piece.getValue(),piece.getType()));
