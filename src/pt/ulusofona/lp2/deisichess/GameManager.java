@@ -26,6 +26,8 @@ public class GameManager {
 
     private final int johnMcClaneCounter = 9;
     ArrayList<String> undoList;
+
+    ArrayList<Integer> teamsList;
     HashMap<Integer, String> typeDictionary = new HashMap<>();
 
     ArrayList<String> chessInfo;
@@ -50,7 +52,7 @@ public class GameManager {
     //Leitor dos arquivos de informação do Jogo
     public void loadGame(File file) throws InvalidGameInputException,InvalidTeamException, IOException{
 
-
+        teamsList = new ArrayList<>();
         undoList = new ArrayList<>();
         chessInfo = new ArrayList<>();
         initialLine = 2;
@@ -440,19 +442,22 @@ public class GameManager {
                                             return false;
                                         }
 
-                                    } else if (i > x1 && j > y1) {
+                                    }
+                                    else if (i > x1 && j > y1) {
                                         --i;
                                         --j;
                                         if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
                                             return false;
                                         }
-                                    } else if (i > x1 && j < y1) {
+                                    }
+                                    else if (i > x1 && j < y1) {
                                         --i;
                                         ++j;
                                         if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
                                             return false;
                                         }
-                                    } else if (i < x1 && j > y1) {
+                                    }
+                                    else if (i < x1 && j > y1) {
                                         ++i;
                                         --j;
                                         if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
@@ -885,11 +890,12 @@ public class GameManager {
         int counter = piecesCounter.get(homerPieceCounter)+1;
         piecesCounter.put(homerPieceCounter, counter);
         for (Piece piece : piecesDictionary.values()) {
-            if (piece.getType() == 6 && counter % 3 == 0){
-                piece.updatePieceInfo();
-            }
-            else{
-                piece.setPieceInfo("Doh! zzzzzz");
+            if (piece.getType() == 6){
+               if (counter % 3 == 0){
+                   piece.updatePieceInfo();
+               }else{
+                   piece.setPieceInfo("Doh! zzzzzz");
+               }
             }
         }
     }
@@ -1021,9 +1027,18 @@ public class GameManager {
                         peca.updatePieceInfo();
                     }
 
+                    if (teamsList.isEmpty()){
+                        teamsList.add(team);
+                    }
+                    else if (!teamsList.contains(team)) {
+                        teamsList.add(team);
+                    }
+                    /*
                     if (team == 10){
                         isBlackPieceInBoard = true;
                     }
+
+                     */
 
                     piecesDictionary.put(id, peca);
                     ++initialLine;
@@ -1038,7 +1053,12 @@ public class GameManager {
 
             }
 
-            currentTeam = isBlackPieceInBoard ? 10 : 30;
+            if (teamsList.contains(blackPiece)){
+                currentTeam = blackPiece;
+            }else{
+                currentTeam = yellowPiece;
+            }
+
     }
     private int getPiecesSize(){
         return Integer.parseInt(chessInfo.get(1));
