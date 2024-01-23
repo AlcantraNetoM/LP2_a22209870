@@ -717,7 +717,8 @@ public class GameManager {
                                 return false;
                             }
 
-                        } else if (piecesCounter.get(jokerCopyPieceCounter) == 4) {
+                        }
+                        else if (piecesCounter.get(jokerCopyPieceCounter) == 4) {
                             if ((y1 == y0)) {
                                 for (int i = x0; i != x1; ) {
                                     if (i < x1) {
@@ -737,7 +738,8 @@ public class GameManager {
                                 return false;
                             }
 
-                        } else if (piecesCounter.get(jokerCopyPieceCounter) == 5) {
+                        }
+                        else if (piecesCounter.get(jokerCopyPieceCounter) == 5) {
                             if ((x1 == x0)) {
                                 for (int j = y0; j != y1; ) {
                                     if (j < y1) {
@@ -815,7 +817,8 @@ public class GameManager {
                     //
                     //piecesCounter.put(nextPiece.team, piecesCounter.get(nextPiece.team)-1);
 
-                } else {
+                }
+                else {
                     piecesCounter.put(limitOfMovesByPiecesController,
                             piecesCounter.get(limitOfMovesByPiecesController) + 1);
                 }
@@ -844,35 +847,6 @@ public class GameManager {
                         currentTeam = whitePiece;
                     }
                 }
-
-
-
-
-                /*
-                int blackValidMoves = piecesCounter.get(blackPiecesValidMovesCounter);
-                int whiteValidMoves = piecesCounter.get(whitePiecesValidMovesCounter);
-                if ((piece.getTeam() == 10 &&  (blackValidMoves + 1) % 3 == 0) || (piece.getTeam() == 20 &&  (whiteValidMoves + 1) % 3 == 0)){
-                    for (Piece pieceHomer : piecesDictionary.values()) {
-                        if (pieceHomer.getType() == 6){
-                            String pieceInfo =
-                                    pieceHomer.getId()
-                                    +":"+pieceHomer.getType()
-                                    +":"+pieceHomer.getTeam()
-                                    +":"+pieceHomer.getNickName();
-
-                            pieceHomer.setPieceInfo(pieceInfo);
-                        }
-                    }
-                }
-                else{
-                    for (Piece pieceHomer : piecesDictionary.values()) {
-                        if (pieceHomer.getType() == 6){
-                            pieceHomer.setPieceInfo("Doh zzzzzzz");
-                        }
-                    }
-                }
-
-                 */
 
 
                 changeJokerSkill();
@@ -1038,7 +1012,7 @@ public class GameManager {
         gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesValidMovesCounter)));
         gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesInvalidMovesCounter)));
 
-        gameStatistic.add("Equipas das Brancas");
+        gameStatistic.add("Equipa das Brancas");
         gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesEliminatedController)));
         gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesValidMovesCounter)));
         gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesInvalidMovesCounter)));
