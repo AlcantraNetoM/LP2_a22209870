@@ -11,8 +11,11 @@ public class GameManager {
 
     private final int blackPiece = 10;
     private final int whitePiece = 20;
-
     private final int yellowPiece = 30;
+
+
+
+
     private final int blackPiecesEliminatedController = 0;
     private final int whitePiecesEliminatedController = 1;
     private final int limitOfMovesByPiecesController = 2;
@@ -20,16 +23,14 @@ public class GameManager {
     private final int whitePiecesValidMovesCounter = 4;
     private final int blackPiecesInvalidMovesCounter = 5;
     private final int whitePiecesInvalidMovesCounter = 6;
-
     private final int homerPieceCounter = 7;
     private final int jokerCopyPieceCounter = 8;
-
     private final int johnMcClaneCounter = 9;
-    ArrayList<String> undoList;
 
+
+    ArrayList<String> undoList;
     ArrayList<Integer> teamsList;
     HashMap<Integer, String> typeDictionary = new HashMap<>();
-
     ArrayList<String> chessInfo;
     HashMap<Integer,Piece> piecesDictionary = new HashMap<>();
     HashMap<Integer, HashMap<Integer,Integer>> chessMatrix = new HashMap<>();
@@ -37,13 +38,8 @@ public class GameManager {
     //Controla o número de peças eliminadas e jogadas em casas vazias
     HashMap<Integer, Integer> piecesCounter = new HashMap<>();
 
-    int initialLine;
 
-    boolean isHomerAwake = false;
-    boolean isWhiteKingCaptured = false;
-    boolean isBlackKingCaptured = false;
-    boolean areOnlyKings = false;
-    boolean isBlackPieceInBoard = false;
+    int initialLine;
     String result;
     int currentTeam;
 
@@ -69,8 +65,8 @@ public class GameManager {
 
 
             //Controla o número de peças eliminadas
-            piecesCounter.put(blackPiecesEliminatedController, getPiecesSize()/2);
-            piecesCounter.put(whitePiecesEliminatedController, getPiecesSize()/2);
+            piecesCounter.put(blackPiecesEliminatedController, 0);
+            piecesCounter.put(whitePiecesEliminatedController, 0);
 
             //Controla se as 10 jogadas foram feitas
             piecesCounter.put(limitOfMovesByPiecesController,0);
@@ -84,7 +80,7 @@ public class GameManager {
             piecesCounter.put(whitePiecesInvalidMovesCounter, 0);
 
             piecesCounter.put(jokerCopyPieceCounter, 1);
-            piecesCounter.put(johnMcClaneCounter, 4);
+            piecesCounter.put(johnMcClaneCounter, 2);
             piecesCounter.put(homerPieceCounter, 0);
 
             typeDictionary.put(0, "Rei");
@@ -112,26 +108,389 @@ public class GameManager {
             //Peça na posição ocupada
             Piece nextPiece = piecesDictionary.get(chessMatrix.get(y1).get(x1));
 
+            if (!moveDone(piece,nextPiece,x0,y0,x1,y1)){
+                if (piece.getTeam() == blackPiece){
+                    int counter = piecesCounter.get(blackPiecesInvalidMovesCounter)+1;
+                    piecesCounter.put(blackPiecesInvalidMovesCounter,counter);
+                }
+                else if(piece.getTeam() == whitePiece){
+                    int counter = piecesCounter.get(whitePiecesInvalidMovesCounter)+1;
+                    piecesCounter.put(whitePiecesInvalidMovesCounter,counter);
+                }
+            }
+            else{
+                return true;
+            }
 
-            if (piece != null) {
-                if (piece.getTeam() == currentTeam) {
 
-                    if (nextPiece != null && nextPiece.getTeam() == piece.getTeam()) {
-                        if (piece.getTeam() == blackPiece) {
-                            int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter);
-                            piecesCounter.put(blackPiecesInvalidMovesCounter, ++currentResult);
-                        } else {
-                            int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter);
-                            piecesCounter.put(whitePiecesInvalidMovesCounter, ++currentResult);
-                        }
-                        return false;
+        }
+      return false;
+    }
+
+    private boolean moveDone(Piece piece, Piece nextPiece, int x0, int y0, int x1, int y1){
+        if (piece != null) {
+            if (piece.getTeam() == currentTeam) {
+
+                if (nextPiece != null && nextPiece.getTeam() == piece.getTeam()) {
+                    if (piece.getTeam() == blackPiece) {
+                        int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter);
+                        piecesCounter.put(blackPiecesInvalidMovesCounter, ++currentResult);
+                    } else {
+                        int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter);
+                        piecesCounter.put(whitePiecesInvalidMovesCounter, ++currentResult);
                     }
+                    return false;
+                }
 
 
-                    try {
-                        //Coloca a peça Rei na nova posição
-                        if (piece.getType() == 0) {
-                            //Coloca o Rei na Diagonal
+                try {
+                    //Coloca a peça Rei na nova posição
+                    if (piece.getType() == 0) {
+                        //Coloca o Rei na Diagonal
+                        if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 1) {
+                            for (int i = x0, j = y0; i != x1; ) {
+                                if (i < x1 && j < y1) {
+                                    ++i;
+                                    ++j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+
+                                } else if (i > x1 && j > y1) {
+                                    --i;
+                                    --j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+
+                                } else if (i > x1 && j < y1) {
+                                    --i;
+                                    ++j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+                                } else if (i < x1 && j > y1) {
+                                    ++i;
+                                    --j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        }
+
+                        //Coloca o Rei na horizontal
+                        else if ((y1 == y0) && (Math.abs(x1 - x0) <= 1)) {
+                            for (int i = x0; i != x1; ) {
+                                if (i < x1) {
+                                    ++i;
+                                    if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
+                                        return false;
+                                    }
+                                } else {
+                                    --i;
+                                    if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        }
+
+                        //Coloca o Rei na Vertical
+                        else if ((x1 == x0) && (Math.abs(y1 - y0) <= 1)) {
+                            for (int j = y0; j != y1; ) {
+                                if (j < y1) {
+                                    ++j;
+                                    if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
+                                        return false;
+                                    }
+                                } else {
+                                    --j;
+                                    if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        } else {
+                            return false;
+                        }
+                    }
+                    //Coloca a peça da Rainha na nova Posição
+                    else if (piece.getType() == 1) {
+
+                        //Coloca da rainha na posição diagonal
+                        if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 5) {
+                            for (int i = x0, j = y0; i != x1; ) {
+                                if (i < x1 && j < y1) {
+                                    ++i;
+                                    ++j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+
+                                } else if (i > x1 && j > y1) {
+                                    --i;
+                                    --j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+                                } else if (i > x1 && j < y1) {
+                                    --i;
+                                    ++j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+                                } else if (i < x1 && j > y1) {
+                                    ++i;
+                                    --j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            if (nextPiece != null && nextPiece.getType() == 1) {
+                                return false;
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        }
+
+                        //Coloca da rainha na horizontal
+                        else if ((y1 == y0) && (Math.abs(x1 - x0) <= 5)) {
+                            for (int i = x0; i != x1; ) {
+                                if (i < x1) {
+                                    ++i;
+                                    if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
+                                        return false;
+                                    }
+                                } else {
+                                    --i;
+                                    if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            if (nextPiece != null && nextPiece.getType() == 1) {
+                                return false;
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        }
+
+                        //Coloca da rainha na Vertical
+                        else if ((x1 == x0) && (Math.abs(y1 - y0) <= 5)) {
+                            for (int j = y0; j != y1; ) {
+                                if (j < y1) {
+                                    ++j;
+                                    if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
+                                        return false;
+                                    }
+                                } else {
+                                    --j;
+                                    if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            if (nextPiece != null && nextPiece.getType() == 1) {
+                                return false;
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        } else {
+                            return false;
+                        }
+                    }
+                    //Coloca a peça da Ponei Mágico na nova Posição
+                    else if (piece.getType() == 2) {
+                        if (Math.abs(y1 - y0) == 2 && Math.abs(x1 - x0) == 2) {
+
+                            boolean isVerticalLineBlocked = false;
+                            boolean isHorizontalLineBlocked = false;
+
+                            for (int i = x0, j = y0; i != x1 || j != y1; ) {
+                                if (!isVerticalLineBlocked) {
+                                    if (j == y1) {
+                                        if (i < x1) {
+                                            ++i;
+                                        } else {
+                                            --i;
+                                        }
+
+                                        if (chessMatrix.get(j).get(i) != 0 && i != x1) {
+                                            isVerticalLineBlocked = true;
+                                            i = x0;
+                                            j = y0;
+                                        }
+                                    } else {
+                                        if (j < y1) {
+                                            ++j;
+                                        } else {
+                                            --j;
+                                        }
+                                        if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                            isVerticalLineBlocked = true;
+                                            j = y0;
+                                            continue;
+                                        }
+                                    }
+                                } else {
+                                    if (i == x1) {
+                                        if (j < y1) {
+                                            ++j;
+                                        } else {
+                                            --j;
+                                        }
+
+                                    } else {
+                                        if (i < x1) {
+                                            ++i;
+                                        } else {
+                                            --i;
+                                        }
+                                    }
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        isHorizontalLineBlocked = true;
+                                    }
+                                }
+                                if (isVerticalLineBlocked && isHorizontalLineBlocked) {
+                                    return false;
+                                }
+
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        } else {
+                            return false;
+                        }
+                    }
+                    //Coloca a peça do Padre na Vila na nova Posição
+                    else if (piece.getType() == 3) {
+                        if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 3) {
+                            for (int i = x0, j = y0; i != x1; ) {
+                                if (i < x1 && j < y1) {
+                                    ++i;
+                                    ++j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+
+                                } else if (i > x1 && j > y1) {
+                                    --i;
+                                    --j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+                                } else if (i > x1 && j < y1) {
+                                    --i;
+                                    ++j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+                                } else if (i < x1 && j > y1) {
+                                    ++i;
+                                    --j;
+                                    if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        } else {
+                            return false;
+                        }
+                    }
+                    //Coloca a peça da Torre Horizontal na nova Posição
+                    else if (piece.getType() == 4) {
+                        if ((y1 == y0)) {
+                            for (int i = x0; i != x1; ) {
+                                if (i < x1) {
+                                    ++i;
+                                    if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
+                                        return false;
+                                    }
+                                } else {
+                                    --i;
+                                    if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        } else {
+                            return false;
+                        }
+                    }
+                    //Coloca a peça da Torre Vertical na nova Posição
+                    else if (piece.getType() == 5) {
+                        if ((x1 == x0)) {
+                            for (int j = y0; j != y1; ) {
+                                if (j < y1) {
+                                    ++j;
+                                    if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
+                                        return false;
+                                    }
+                                } else {
+                                    --j;
+                                    if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            movePiece(y1, y0, x1, x0, piece, nextPiece);
+                        } else {
+                            return false;
+                        }
+                    }
+                    //Coloca a peça Homer Simpson na nova Posição
+                    else if (piece.getType() == 6) {
+
+                        if (piecesCounter.get(homerPieceCounter) % 3 != 0) {
+                            if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 1) {
+                                for (int i = x0, j = y0; i != x1; ) {
+                                    if (i < x1 && j < y1) {
+                                        ++i;
+                                        ++j;
+                                        if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                            return false;
+                                        }
+
+                                    }
+                                    else if (i > x1 && j > y1) {
+                                        --i;
+                                        --j;
+                                        if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                            return false;
+                                        }
+                                    }
+                                    else if (i > x1 && j < y1) {
+                                        --i;
+                                        ++j;
+                                        if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                            return false;
+                                        }
+                                    }
+                                    else if (i < x1 && j > y1) {
+                                        ++i;
+                                        --j;
+                                        if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
+                                            return false;
+                                        }
+                                    }
+                                }
+                                movePiece(y1, y0, x1, x0, piece, nextPiece);
+                            }
+                            else {
+                                return false;
+                            }
+                        }
+                        else {
+                            return false;
+                        }
+
+                        /*
+                        int blackValidMoves = piecesCounter.get(blackPiecesValidMovesCounter);
+                        int whiteValidMoves = piecesCounter.get(whitePiecesValidMovesCounter);
+                        if ((piece.getTeam() == 10 &&  (blackValidMoves + 1) % 3 == 0) || (piece.getTeam() == 20 &&  (whiteValidMoves + 1) % 3 == 0)){
                             if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 1) {
                                 for (int i = x0, j = y0; i != x1; ) {
                                     if (i < x1 && j < y1) {
@@ -147,7 +506,6 @@ public class GameManager {
                                         if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
                                             return false;
                                         }
-
                                     } else if (i > x1 && j < y1) {
                                         --i;
                                         ++j;
@@ -164,48 +522,22 @@ public class GameManager {
                                 }
                                 movePiece(y1, y0, x1, x0, piece, nextPiece);
                             }
-
-                            //Coloca o Rei na horizontal
-                            else if ((y1 == y0) && (Math.abs(x1 - x0) <= 1)) {
-                                for (int i = x0; i != x1; ) {
-                                    if (i < x1) {
-                                        ++i;
-                                        if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
-                                            return false;
-                                        }
-                                    } else {
-                                        --i;
-                                        if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
-                                            return false;
-                                        }
-                                    }
-                                }
-                                movePiece(y1, y0, x1, x0, piece, nextPiece);
-                            }
-
-                            //Coloca o Rei na Vertical
-                            else if ((x1 == x0) && (Math.abs(y1 - y0) <= 1)) {
-                                for (int j = y0; j != y1; ) {
-                                    if (j < y1) {
-                                        ++j;
-                                        if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
-                                            return false;
-                                        }
-                                    } else {
-                                        --j;
-                                        if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
-                                            return false;
-                                        }
-                                    }
-                                }
-                                movePiece(y1, y0, x1, x0, piece, nextPiece);
-                            } else {
+                            else {
                                 return false;
                             }
                         }
-                        //Coloca a peça da Rainha na nova Posição
-                        else if (piece.getType() == 1) {
+                        else{
+                            return false;
+                        }
 
+                         */
+
+
+                    }
+
+                    //Coloca a peça Joker na nova Posição
+                    else if (piece.getType() == 7) {
+                        if (piecesCounter.get(jokerCopyPieceCounter) == 1) {
                             //Coloca da rainha na posição diagonal
                             if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 5) {
                                 for (int i = x0, j = y0; i != x1; ) {
@@ -241,7 +573,6 @@ public class GameManager {
                                 }
                                 movePiece(y1, y0, x1, x0, piece, nextPiece);
                             }
-
                             //Coloca da rainha na horizontal
                             else if ((y1 == y0) && (Math.abs(x1 - x0) <= 5)) {
                                 for (int i = x0; i != x1; ) {
@@ -262,7 +593,6 @@ public class GameManager {
                                 }
                                 movePiece(y1, y0, x1, x0, piece, nextPiece);
                             }
-
                             //Coloca da rainha na Vertical
                             else if ((x1 == x0) && (Math.abs(y1 - y0) <= 5)) {
                                 for (int j = y0; j != y1; ) {
@@ -285,9 +615,10 @@ public class GameManager {
                             } else {
                                 return false;
                             }
+
+
                         }
-                        //Coloca a peça da Ponei Mágico na nova Posição
-                        else if (piece.getType() == 2) {
+                        else if (piecesCounter.get(jokerCopyPieceCounter) == 2) {
                             if (Math.abs(y1 - y0) == 2 && Math.abs(x1 - x0) == 2) {
 
                                 boolean isVerticalLineBlocked = false;
@@ -338,6 +669,7 @@ public class GameManager {
                                             isHorizontalLineBlocked = true;
                                         }
                                     }
+
                                     if (isVerticalLineBlocked && isHorizontalLineBlocked) {
                                         return false;
                                     }
@@ -347,9 +679,10 @@ public class GameManager {
                             } else {
                                 return false;
                             }
+
+
                         }
-                        //Coloca a peça do Padre na Vila na nova Posição
-                        else if (piece.getType() == 3) {
+                        else if (piecesCounter.get(jokerCopyPieceCounter) == 3) {
                             if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 3) {
                                 for (int i = x0, j = y0; i != x1; ) {
                                     if (i < x1 && j < y1) {
@@ -383,9 +716,8 @@ public class GameManager {
                             } else {
                                 return false;
                             }
-                        }
-                        //Coloca a peça da Torre Horizontal na nova Posição
-                        else if (piece.getType() == 4) {
+
+                        } else if (piecesCounter.get(jokerCopyPieceCounter) == 4) {
                             if ((y1 == y0)) {
                                 for (int i = x0; i != x1; ) {
                                     if (i < x1) {
@@ -404,9 +736,8 @@ public class GameManager {
                             } else {
                                 return false;
                             }
-                        }
-                        //Coloca a peça da Torre Vertical na nova Posição
-                        else if (piece.getType() == 5) {
+
+                        } else if (piecesCounter.get(jokerCopyPieceCounter) == 5) {
                             if ((x1 == x0)) {
                                 for (int j = y0; j != y1; ) {
                                     if (j < y1) {
@@ -425,11 +756,9 @@ public class GameManager {
                             } else {
                                 return false;
                             }
-                        }
-                        //Coloca a peça Homer Simpson na nova Posição
-                        else if (piece.getType() == 6) {
 
-                            if (piecesCounter.get(homerPieceCounter) % 3 != 0) {
+                        } else if (piecesCounter.get(jokerCopyPieceCounter) == 6) {
+                            if (piecesCounter.get(homerPieceCounter) % 3 == 0) {
                                 if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 1) {
                                     for (int i = x0, j = y0; i != x1; ) {
                                         if (i < x1 && j < y1) {
@@ -439,244 +768,6 @@ public class GameManager {
                                                 return false;
                                             }
 
-                                        }
-                                        else if (i > x1 && j > y1) {
-                                            --i;
-                                            --j;
-                                            if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                return false;
-                                            }
-                                        }
-                                        else if (i > x1 && j < y1) {
-                                            --i;
-                                            ++j;
-                                            if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                return false;
-                                            }
-                                        }
-                                        else if (i < x1 && j > y1) {
-                                            ++i;
-                                            --j;
-                                            if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
-                                }
-                                else {
-                                    return false;
-                                }
-                            }
-                            else {
-                                return false;
-                            }
-
-                        /*
-                        int blackValidMoves = piecesCounter.get(blackPiecesValidMovesCounter);
-                        int whiteValidMoves = piecesCounter.get(whitePiecesValidMovesCounter);
-                        if ((piece.getTeam() == 10 &&  (blackValidMoves + 1) % 3 == 0) || (piece.getTeam() == 20 &&  (whiteValidMoves + 1) % 3 == 0)){
-                            if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 1) {
-                                for (int i = x0, j = y0; i != x1; ) {
-                                    if (i < x1 && j < y1) {
-                                        ++i;
-                                        ++j;
-                                        if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                            return false;
-                                        }
-
-                                    } else if (i > x1 && j > y1) {
-                                        --i;
-                                        --j;
-                                        if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                            return false;
-                                        }
-                                    } else if (i > x1 && j < y1) {
-                                        --i;
-                                        ++j;
-                                        if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                            return false;
-                                        }
-                                    } else if (i < x1 && j > y1) {
-                                        ++i;
-                                        --j;
-                                        if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                            return false;
-                                        }
-                                    }
-                                }
-                                movePiece(y1, y0, x1, x0, piece, nextPiece);
-                            }
-                            else {
-                                return false;
-                            }
-                        }
-                        else{
-                            return false;
-                        }
-
-                         */
-
-
-                        }
-
-                        //Coloca a peça Joker na nova Posição
-                        else if (piece.getType() == 7) {
-                            if (piecesCounter.get(jokerCopyPieceCounter) == 1) {
-                                //Coloca da rainha na posição diagonal
-                                if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 5) {
-                                    for (int i = x0, j = y0; i != x1; ) {
-                                        if (i < x1 && j < y1) {
-                                            ++i;
-                                            ++j;
-                                            if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                return false;
-                                            }
-
-                                        } else if (i > x1 && j > y1) {
-                                            --i;
-                                            --j;
-                                            if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                return false;
-                                            }
-                                        } else if (i > x1 && j < y1) {
-                                            --i;
-                                            ++j;
-                                            if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                return false;
-                                            }
-                                        } else if (i < x1 && j > y1) {
-                                            ++i;
-                                            --j;
-                                            if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    if (nextPiece != null && nextPiece.getType() == 1) {
-                                        return false;
-                                    }
-                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
-                                }
-                                //Coloca da rainha na horizontal
-                                else if ((y1 == y0) && (Math.abs(x1 - x0) <= 5)) {
-                                    for (int i = x0; i != x1; ) {
-                                        if (i < x1) {
-                                            ++i;
-                                            if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
-                                                return false;
-                                            }
-                                        } else {
-                                            --i;
-                                            if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    if (nextPiece != null && nextPiece.getType() == 1) {
-                                        return false;
-                                    }
-                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
-                                }
-                                //Coloca da rainha na Vertical
-                                else if ((x1 == x0) && (Math.abs(y1 - y0) <= 5)) {
-                                    for (int j = y0; j != y1; ) {
-                                        if (j < y1) {
-                                            ++j;
-                                            if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
-                                                return false;
-                                            }
-                                        } else {
-                                            --j;
-                                            if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    if (nextPiece != null && nextPiece.getType() == 1) {
-                                        return false;
-                                    }
-                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
-                                } else {
-                                    return false;
-                                }
-
-
-                            }
-                            else if (piecesCounter.get(jokerCopyPieceCounter) == 2) {
-                                if (Math.abs(y1 - y0) == 2 && Math.abs(x1 - x0) == 2) {
-
-                                    boolean isVerticalLineBlocked = false;
-                                    boolean isHorizontalLineBlocked = false;
-
-                                    for (int i = x0, j = y0; i != x1 || j != y1; ) {
-                                        if (!isVerticalLineBlocked) {
-                                            if (j == y1) {
-                                                if (i < x1) {
-                                                    ++i;
-                                                } else {
-                                                    --i;
-                                                }
-
-                                                if (chessMatrix.get(j).get(i) != 0 && i != x1) {
-                                                    isVerticalLineBlocked = true;
-                                                    i = x0;
-                                                    j = y0;
-                                                }
-                                            } else {
-                                                if (j < y1) {
-                                                    ++j;
-                                                } else {
-                                                    --j;
-                                                }
-                                                if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                    isVerticalLineBlocked = true;
-                                                    j = y0;
-                                                    continue;
-                                                }
-                                            }
-                                        } else {
-                                            if (i == x1) {
-                                                if (j < y1) {
-                                                    ++j;
-                                                } else {
-                                                    --j;
-                                                }
-
-                                            } else {
-                                                if (i < x1) {
-                                                    ++i;
-                                                } else {
-                                                    --i;
-                                                }
-                                            }
-                                            if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                isHorizontalLineBlocked = true;
-                                            }
-                                        }
-
-                                        if (isVerticalLineBlocked && isHorizontalLineBlocked) {
-                                            return false;
-                                        }
-
-                                    }
-                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
-                                } else {
-                                    return false;
-                                }
-
-
-                            }
-                            else if (piecesCounter.get(jokerCopyPieceCounter) == 3) {
-                                if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 3) {
-                                    for (int i = x0, j = y0; i != x1; ) {
-                                        if (i < x1 && j < y1) {
-                                            ++i;
-                                            ++j;
-                                            if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                return false;
-                                            }
-
                                         } else if (i > x1 && j > y1) {
                                             --i;
                                             --j;
@@ -701,134 +792,58 @@ public class GameManager {
                                 } else {
                                     return false;
                                 }
-
-                            } else if (piecesCounter.get(jokerCopyPieceCounter) == 4) {
-                                if ((y1 == y0)) {
-                                    for (int i = x0; i != x1; ) {
-                                        if (i < x1) {
-                                            ++i;
-                                            if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
-                                                return false;
-                                            }
-                                        } else {
-                                            --i;
-                                            if (chessMatrix.get(y1).get(i) != 0 && i != x1) {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
-                                } else {
-                                    return false;
-                                }
-
-                            } else if (piecesCounter.get(jokerCopyPieceCounter) == 5) {
-                                if ((x1 == x0)) {
-                                    for (int j = y0; j != y1; ) {
-                                        if (j < y1) {
-                                            ++j;
-                                            if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
-                                                return false;
-                                            }
-                                        } else {
-                                            --j;
-                                            if (chessMatrix.get(j).get(x1) != 0 && j != y1) {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    movePiece(y1, y0, x1, x0, piece, nextPiece);
-                                } else {
-                                    return false;
-                                }
-
-                            } else if (piecesCounter.get(jokerCopyPieceCounter) == 6) {
-                                if (piecesCounter.get(homerPieceCounter) % 3 == 0) {
-                                    if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 1) {
-                                        for (int i = x0, j = y0; i != x1; ) {
-                                            if (i < x1 && j < y1) {
-                                                ++i;
-                                                ++j;
-                                                if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                    return false;
-                                                }
-
-                                            } else if (i > x1 && j > y1) {
-                                                --i;
-                                                --j;
-                                                if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                    return false;
-                                                }
-                                            } else if (i > x1 && j < y1) {
-                                                --i;
-                                                ++j;
-                                                if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                    return false;
-                                                }
-                                            } else if (i < x1 && j > y1) {
-                                                ++i;
-                                                --j;
-                                                if (chessMatrix.get(j).get(i) != 0 && i != x1 && j != y1) {
-                                                    return false;
-                                                }
-                                            }
-                                        }
-                                        movePiece(y1, y0, x1, x0, piece, nextPiece);
-                                    } else {
-                                        return false;
-                                    }
-                                } else {
-                                    return false;
-                                }
+                            } else {
+                                return false;
                             }
                         }
-
-                        //John McClaine
-                        else if (piece.getType() == 10) {
-                            return false;
-                        }
-
-                    } catch (NullPointerException nullPointerException) {
-                        nullPointerException.printStackTrace();
                     }
 
-                    //Eliminar peça inimiga
-                    if (nextPiece != null) {
-
-                        //reseta o número de jogadas sem eliminações
-                        piecesCounter.put(limitOfMovesByPiecesController, 0);
-                        //
-                        //piecesCounter.put(nextPiece.team, piecesCounter.get(nextPiece.team)-1);
-
-                    } else {
-                        piecesCounter.put(limitOfMovesByPiecesController,
-                                piecesCounter.get(limitOfMovesByPiecesController) + 1);
+                    //John McClaine
+                    else if (piece.getType() == 10) {
+                        return false;
                     }
 
+                } catch (NullPointerException nullPointerException) {
+                    nullPointerException.printStackTrace();
+                }
 
-                    //Trocar a vez do jogo das peças
-                    if (teamsList.contains(blackPiece)) {
-                        if (piece.getTeam() == blackPiece) {
-                            int currentResult = piecesCounter.get(blackPiecesValidMovesCounter);
-                            piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
-                            currentTeam = teamsList.contains(whitePiece) ? whitePiece : yellowPiece;
-                        }
-                        else if (piece.getTeam() == whitePiece || piece.getTeam() == yellowPiece) {
-                            int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
-                            piecesCounter.put(whitePiecesValidMovesCounter, ++currentResult);
-                            currentTeam = blackPiece;
-                        }
+                //Eliminar peça inimiga
+                if (nextPiece != null) {
+
+                    //reseta o número de jogadas sem eliminações
+                    piecesCounter.put(limitOfMovesByPiecesController, 0);
+                    //
+                    //piecesCounter.put(nextPiece.team, piecesCounter.get(nextPiece.team)-1);
+
+                } else {
+                    piecesCounter.put(limitOfMovesByPiecesController,
+                            piecesCounter.get(limitOfMovesByPiecesController) + 1);
+                }
+
+
+                //Trocar a vez do jogo das peças
+                if (teamsList.contains(blackPiece)) {
+                    if (piece.getTeam() == blackPiece) {
+                        int currentResult = piecesCounter.get(blackPiecesValidMovesCounter);
+                        piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
+                        currentTeam = teamsList.contains(whitePiece) ? whitePiece : yellowPiece;
                     }
-                    else {
-                        if (piece.getTeam() == whitePiece) {
-                            int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
-                            piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
-                            currentTeam = yellowPiece;
-                        }
-                        else if (piece.getTeam() == yellowPiece) {
-                            currentTeam = whitePiece;
-                        }
+                    else if (piece.getTeam() == whitePiece || piece.getTeam() == yellowPiece) {
+                        int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
+                        piecesCounter.put(whitePiecesValidMovesCounter, ++currentResult);
+                        currentTeam = blackPiece;
                     }
+                }
+                else {
+                    if (piece.getTeam() == whitePiece) {
+                        int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
+                        piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
+                        currentTeam = yellowPiece;
+                    }
+                    else if (piece.getTeam() == yellowPiece) {
+                        currentTeam = whitePiece;
+                    }
+                }
 
 
 
@@ -860,15 +875,14 @@ public class GameManager {
                  */
 
 
-                    changeJokerSkill();
-                    increaseJohnMcClaneCounter();
-                    increaseHomerCounter();
+                changeJokerSkill();
+                increaseJohnMcClaneCounter();
+                increaseHomerCounter();
 
-                    return true;
-                }
+                return true;
             }
         }
-      return false;
+        return true;
     }
     private void movePiece(int y1, int y0, int x1, int x0, Piece piece, Piece nextPiece){
         updateUndoList();
@@ -891,6 +905,17 @@ public class GameManager {
                 return;
             }
             else{
+                if (nextPiece.getTeam() == blackPiece){
+                    int counter = piecesCounter.get(blackPiecesEliminatedController)+1;
+                    piecesCounter.put(blackPiecesEliminatedController,counter);
+                }
+                else if(nextPiece.getTeam() == whitePiece){
+                    int counter = piecesCounter.get(whitePiecesEliminatedController)+1;
+                    piecesCounter.put(whitePiecesEliminatedController,counter);
+                }
+                else if(nextPiece.getTeam() == yellowPiece){
+                   //
+                }
                 nextPiece.setCoordinateX(-1);
                 nextPiece.setCoordinateY(-1);
                 nextPiece.updatePieceInfo();
@@ -1009,12 +1034,12 @@ public class GameManager {
         gameStatistic.add("Resultado: "+result);
         gameStatistic.add("---");
         gameStatistic.add("Equipa das Pretas");
-        gameStatistic.add(String.valueOf(getPiecesSize()/2-piecesCounter.get(whitePiecesEliminatedController)));
+        gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesEliminatedController)));
         gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesValidMovesCounter)));
         gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesInvalidMovesCounter)));
 
         gameStatistic.add("Equipas das Brancas");
-        gameStatistic.add(String.valueOf(getPiecesSize()/2-piecesCounter.get(blackPiecesEliminatedController)));
+        gameStatistic.add(String.valueOf(piecesCounter.get(blackPiecesEliminatedController)));
         gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesValidMovesCounter)));
         gameStatistic.add(String.valueOf(piecesCounter.get(whitePiecesInvalidMovesCounter)));
 
@@ -1530,7 +1555,6 @@ public class GameManager {
                 }
             }
 
-            comparables.add(new Comparable(x,y,piece.getValue(),piece.getType()));
 
         }
         else if (piece.getType() == 1) {
