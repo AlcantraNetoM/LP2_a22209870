@@ -89,7 +89,7 @@ public class GameManager {
             piecesCounter.put(yellowPiecesInvalidMovesCounter, 0);
 
             piecesCounter.put(jokerCopyPieceCounter, 1);
-            piecesCounter.put(johnMcClaneCounter, 2);
+            piecesCounter.put(johnMcClaneCounter, 3);
             piecesCounter.put(homerPieceCounter, 0);
 
             typeDictionary.put(0, "Rei");
