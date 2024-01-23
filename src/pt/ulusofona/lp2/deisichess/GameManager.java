@@ -84,7 +84,7 @@ public class GameManager {
             piecesCounter.put(whitePiecesInvalidMovesCounter, 0);
 
             piecesCounter.put(jokerCopyPieceCounter, 1);
-            piecesCounter.put(johnMcClaneCounter, 3);
+            piecesCounter.put(johnMcClaneCounter, 4);
             piecesCounter.put(homerPieceCounter, 0);
 
             typeDictionary.put(0, "Rei");
@@ -463,7 +463,8 @@ public class GameManager {
                                         }
                                     }
                                     movePiece(y1, y0, x1, x0, piece, nextPiece);
-                                } else {
+                                }
+                                else {
                                     return false;
                                 }
                             }
@@ -601,7 +602,8 @@ public class GameManager {
                                 }
 
 
-                            } else if (piecesCounter.get(jokerCopyPieceCounter) == 2) {
+                            }
+                            else if (piecesCounter.get(jokerCopyPieceCounter) == 2) {
                                 if (Math.abs(y1 - y0) == 2 && Math.abs(x1 - x0) == 2) {
 
                                     boolean isVerticalLineBlocked = false;
@@ -664,7 +666,8 @@ public class GameManager {
                                 }
 
 
-                            } else if (piecesCounter.get(jokerCopyPieceCounter) == 3) {
+                            }
+                            else if (piecesCounter.get(jokerCopyPieceCounter) == 3) {
                                 if ((Math.abs(y1 - y0) == Math.abs(x1 - x0)) && Math.abs(y1 - y0) <= 3) {
                                     for (int i = x0, j = y0; i != x1; ) {
                                         if (i < x1 && j < y1) {
@@ -796,20 +799,6 @@ public class GameManager {
                         piecesCounter.put(limitOfMovesByPiecesController, 0);
                         //
                         //piecesCounter.put(nextPiece.team, piecesCounter.get(nextPiece.team)-1);
-                        if (nextPiece.getType() == 1 && nextPiece.getTeam() == 10) {
-                            isBlackKingCaptured = true;
-                        } else if (nextPiece.getType() == 1 && nextPiece.getTeam() == 20) {
-                            isWhiteKingCaptured = true;
-                        }
-
-                        int capturedBlackPieces = piecesCounter.get(blackPiecesEliminatedController);
-                        int capturedWhitePieces = piecesCounter.get(whitePiecesEliminatedController);
-
-                        if (getPiecesSize() - (capturedBlackPieces + capturedWhitePieces) == 2
-                                && piece.getType() == 1 && nextPiece.getType() == 1) {
-                            areOnlyKings = true;
-                        }
-
 
                     } else {
                         piecesCounter.put(limitOfMovesByPiecesController,
@@ -823,11 +812,10 @@ public class GameManager {
                             int currentResult = piecesCounter.get(blackPiecesValidMovesCounter);
                             piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
                             currentTeam = teamsList.contains(whitePiece) ? whitePiece : yellowPiece;
-                        } else if (piece.getTeam() == whitePiece) {
+                        }
+                        else if (piece.getTeam() == whitePiece || piece.getTeam() == yellowPiece) {
                             int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
                             piecesCounter.put(whitePiecesValidMovesCounter, ++currentResult);
-                            currentTeam = blackPiece;
-                        } else if (piece.getTeam() == yellowPiece) {
                             currentTeam = blackPiece;
                         }
                     }
@@ -836,7 +824,8 @@ public class GameManager {
                             int currentResult = piecesCounter.get(whitePiecesValidMovesCounter);
                             piecesCounter.put(blackPiecesValidMovesCounter, ++currentResult);
                             currentTeam = yellowPiece;
-                        } else if (piece.getTeam() == yellowPiece) {
+                        }
+                        else if (piece.getTeam() == yellowPiece) {
                             currentTeam = whitePiece;
                         }
                     }
@@ -982,19 +971,34 @@ public class GameManager {
     }
     public boolean gameOver(){
 
-        if (isBlackKingCaptured){
-            result = "VENCERAM AS BRANCAS";
-            return true;
-        }
-        else if (isWhiteKingCaptured){
-            result = "VENCERAM AS PRETAS";
-            return true;
-        }
-        else if (piecesCounter.get(limitOfMovesByPiecesController) == 10
-                || areOnlyKings){
+        if (piecesCounter.get(limitOfMovesByPiecesController) == 10 ){
             result = "EMPATE";
             return true;
         }
+
+       for (Piece piece : piecesDictionary.values()) {
+           if (piece.getType() == 0 && piece.isPieceCaptured()) {
+               if (teamsList.contains(blackPiece)){
+                   if (piece.getTeam() == blackPiece) {
+                       result = teamsList.contains(whitePiece) ? "VENCERAM AS BRANCAS" : "VENCERAM AS AMARELAS";
+                   }
+                   else if (piece.getTeam() == whitePiece || piece.getTeam() == yellowPiece){
+                       result = "VENCERAM AS PRETAS";
+                   }
+               }
+               else{
+                   if (piece.getTeam() == yellowPiece) {
+                       result = "VENCERAM AS BRANCAS";
+                   }
+                   else if (piece.getTeam() == whitePiece){
+                       result = "VENCERAM AS AMARELAS";
+                   }
+               }
+               return true;
+           }
+       }
+
+
 
         return false;
     }
@@ -1180,7 +1184,14 @@ public class GameManager {
                 for (int j = 0; j < getBoardSize(); j++) {
 
                     chessMatrix.get(i).put(j,Integer.parseInt(chessLineInfo[j]));
+                    int pieceId = chessMatrix.get(i).get(j);
 
+                    if (pieceId != 0) {
+                        Piece piece = piecesDictionary.get(pieceId);
+                        piece.setCoordinateX(i);
+                        piece.setCoordinateY(j);
+                        piece.updatePieceInfo();
+                    }
                 }
             }
 
@@ -1793,8 +1804,6 @@ public class GameManager {
                     break;
                 }
             }
-
-            comparables.add(new Comparable(x,y,piece.getValue(),piece.getType()));
 
         }
         else if (piece.getType() == 5){
