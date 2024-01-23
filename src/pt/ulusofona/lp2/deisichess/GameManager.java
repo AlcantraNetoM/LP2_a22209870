@@ -117,8 +117,27 @@ public class GameManager {
             //Peça na posição ocupada
             Piece nextPiece = piecesDictionary.get(chessMatrix.get(y1).get(x1));
 
+
+
             if (piece != null) {
+                if (nextPiece != null && nextPiece.getTeam() == piece.getTeam()) {
+                    if (piece.getTeam() == blackPiece) {
+                        int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter);
+                        piecesCounter.put(blackPiecesInvalidMovesCounter, ++currentResult);
+                    }
+                    else if (piece.getTeam() == whitePiece){
+                        int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter);
+                        piecesCounter.put(whitePiecesInvalidMovesCounter, ++currentResult);
+                    }
+                    else if (piece.getTeam() == yellowPiece){
+                        int currentResult = piecesCounter.get(yellowPiecesInvalidMovesCounter);
+                        piecesCounter.put(yellowPiecesInvalidMovesCounter, ++currentResult);
+                    }
+                    return false;
+                }
+
                 if (!moveDone(piece, nextPiece, x0, y0, x1, y1)) {
+                    //Contar jogadas invalidas
                     if (piece.getTeam() == blackPiece) {
                         int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
                         piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
@@ -137,6 +156,7 @@ public class GameManager {
                 }
             }
             else{
+                //conta jogadas invalidas em espacos vazios
                 if (currentTeam == blackPiece) {
                     int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
                     piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
@@ -152,43 +172,13 @@ public class GameManager {
             }
 
         }
-        else{
-            if (currentTeam == blackPiece) {
-                int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
-                piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
-            }
-            else if (currentTeam == whitePiece) {
-                int counter = piecesCounter.get(whitePiecesInvalidMovesCounter) + 1;
-                piecesCounter.put(whitePiecesInvalidMovesCounter, counter);
-            }
-            else if (currentTeam == yellowPiece) {
-                int counter = piecesCounter.get(yellowPiecesInvalidMovesCounter) + 1;
-                piecesCounter.put(yellowPiecesInvalidMovesCounter, counter);
-            }
-        }
+
 
       return false;
     }
 
     private boolean moveDone(Piece piece, Piece nextPiece, int x0, int y0, int x1, int y1){
             if (piece.getTeam() == currentTeam) {
-
-                if (nextPiece != null && nextPiece.getTeam() == piece.getTeam()) {
-                    if (piece.getTeam() == blackPiece) {
-                        int currentResult = piecesCounter.get(blackPiecesInvalidMovesCounter);
-                        piecesCounter.put(blackPiecesInvalidMovesCounter, ++currentResult);
-                    }
-                    else if (piece.getTeam() == whitePiece){
-                        int currentResult = piecesCounter.get(whitePiecesInvalidMovesCounter);
-                        piecesCounter.put(whitePiecesInvalidMovesCounter, ++currentResult);
-                    }
-                    else if (piece.getTeam() == yellowPiece){
-                        int currentResult = piecesCounter.get(yellowPiecesInvalidMovesCounter);
-                        piecesCounter.put(yellowPiecesInvalidMovesCounter, ++currentResult);
-                    }
-                    return false;
-                }
-
 
                 try {
                     //Coloca a peça Rei na nova posição
