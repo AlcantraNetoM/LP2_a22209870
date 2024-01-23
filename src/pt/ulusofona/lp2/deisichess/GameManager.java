@@ -108,27 +108,26 @@ public class GameManager {
             //Peça na posição ocupada
             Piece nextPiece = piecesDictionary.get(chessMatrix.get(y1).get(x1));
 
-            if (!moveDone(piece,nextPiece,x0,y0,x1,y1)){
-                if (piece.getTeam() == blackPiece){
-                    int counter = piecesCounter.get(blackPiecesInvalidMovesCounter)+1;
-                    piecesCounter.put(blackPiecesInvalidMovesCounter,counter);
+            if (piece != null) {
+                if (!moveDone(piece, nextPiece, x0, y0, x1, y1)) {
+                    if (piece.getTeam() == blackPiece) {
+                        int counter = piecesCounter.get(blackPiecesInvalidMovesCounter) + 1;
+                        piecesCounter.put(blackPiecesInvalidMovesCounter, counter);
+                    } else if (piece.getTeam() == whitePiece) {
+                        int counter = piecesCounter.get(whitePiecesInvalidMovesCounter) + 1;
+                        piecesCounter.put(whitePiecesInvalidMovesCounter, counter);
+                    }
                 }
-                else if(piece.getTeam() == whitePiece){
-                    int counter = piecesCounter.get(whitePiecesInvalidMovesCounter)+1;
-                    piecesCounter.put(whitePiecesInvalidMovesCounter,counter);
+                else {
+                    return true;
                 }
             }
-            else{
-                return true;
-            }
-
 
         }
       return false;
     }
 
     private boolean moveDone(Piece piece, Piece nextPiece, int x0, int y0, int x1, int y1){
-        if (piece != null) {
             if (piece.getTeam() == currentTeam) {
 
                 if (nextPiece != null && nextPiece.getTeam() == piece.getTeam()) {
@@ -855,8 +854,8 @@ public class GameManager {
 
                 return true;
             }
-        }
-        return true;
+
+        return false;
     }
     private void movePiece(int y1, int y0, int x1, int x0, Piece piece, Piece nextPiece){
         updateUndoList();
@@ -1065,12 +1064,7 @@ public class GameManager {
                     else if (!teamsList.contains(team)) {
                         teamsList.add(team);
                     }
-                    /*
-                    if (team == 10){
-                        isBlackPieceInBoard = true;
-                    }
 
-                     */
 
                     piecesDictionary.put(id, peca);
                     ++initialLine;
