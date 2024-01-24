@@ -1,8 +1,8 @@
 Deise Chess
 
 Youtube: 
-https://www.youtube.com/watch?v=0pXi-ZiSMok
-https://www.youtube.com/watch?v=cXMcFcIVOWc
+Part1:  https://www.youtube.com/watch?v=0pXi-ZiSMok
+Part2:  https://www.youtube.com/watch?v=cXMcFcIVOWc
 
 
 Diagrama UML
